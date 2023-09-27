@@ -1,5 +1,5 @@
 class Ship {
-  constructor(shipName, length, hit) {
+  constructor(shipName, length, hit = 0) {
     this.shipName = shipName;
     this.length = length;
     this.hit = hit;
@@ -19,4 +19,4 @@ class Ship {
   }
 }
 
-export { Ship };
+module.exports = { Ship };
