@@ -7,6 +7,9 @@ class Ship {
   }
 
   // look at getters and setters
+  // get shipName() {
+  //   return this.shipName;
+  // }
 
   hit() {
     this.hit += 1;

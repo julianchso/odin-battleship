@@ -2,8 +2,9 @@ import Gameboard from '../models/gameboard';
 
 let playerBoard = new Gameboard(10, 10);
 let playerGrid = playerBoard.createGrid();
+console.log(playerGrid);
 
-let carrier = playerBoard.placeShip('carrier', 5, [0, 0], 'horizontal');
-console.log(carrier);
+let shipPlacement = playerBoard.placeShip('carrier', 5, [0, 0], 'horizontal');
+console.log(shipPlacement);
 
-module.exports = { playerBoard };
+module.exports = { playerBoard, playerGrid };
