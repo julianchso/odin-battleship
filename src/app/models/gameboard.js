@@ -9,6 +9,7 @@ class Gameboard {
     this.missedAttacks = [];
     this.row = row;
     this.column = column;
+    this.fleet = [];
   }
 
   createGrid() {
@@ -30,18 +31,34 @@ class Gameboard {
 
     // if alignment is horizontal, add ship coordinates to shipPlacement array along the X axis
     if (alignment == 'horizontal') {
+      // TODO: test this
+      if (this.outOfBounds(shipLength, y, this.column)) return;
       for (let i = 0; i < shipLength; i++) {
-        // this.grid.push([x, y + i]);
+        if (this.grid[x][y + i] !== '') return;
         this.grid[x][y + i] = shipName;
+        console.log(`i: ${i}`);
       }
       // if alignment is vertical, add ship coordinates to shipPlacement array along the Y axis
     } else if (alignment == 'vertical') {
+      // TODO: test this
+      if (this.outOfBounds(shipLength, x, this.row)) return;
       for (let i = 0; i < shipLength; i++) {
         // this.grid.push([x + i, y]);
+        if (this.grid[x + i][y] !== '') return;
         this.grid[x + i][y] = shipName;
       }
     }
+    this.addToFleet(ship);
     return this.grid;
+  }
+
+  addToFleet(ship) {
+    this.fleet.push(ship);
+  }
+
+  outOfBounds(shipLength, start, boardLength) {
+    console.log(shipLength + start[0] > boardLength);
+    return shipLength + start[0] > boardLength;
   }
 
   // keep track of ship alignment
@@ -52,11 +69,30 @@ class Gameboard {
   // or records the coordinates of the missed shot.
   receiveAttack(coords) {
     const [x, y] = coords;
-
-    if (this.shipPlacement.includes([x, y])) {
-    } else {
-      this.missedAttacks.push([x, y]);
+    switch (this.grid[x][y]) {
+      case 'carrier':
+        this.getship('carrier').receiveHit();
+        break;
+      case 'battleship':
+        this.getship('battleship').receiveHit();
+        break;
+      case 'destroyer':
+        this.getship('destroyer').receiveHit();
+        break;
+      case 'submarine':
+        this.getship('submarine').receiveHit();
+        break;
+      case 'patrol boat':
+        this.getship('patrol boat').receiveHit();
+        break;
+      default:
+        this.grid[x][y] = 'miss';
     }
+  }
+
+  getship(shipName) {
+    let ship = this.fleet.find((ship) => ship.shipName == shipName);
+    return ship;
   }
 
   // Gameboards should keep track of missed attacks so they can display them properly
