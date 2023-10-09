@@ -4,18 +4,16 @@ import { Ship } from './ship';
 // if receiveAttack() is on a coordinate with shipName, increase ship hit() by 1.
 
 class Gameboard {
-  constructor(row, column) {
+  constructor() {
     this.grid = [];
     this.missedAttacks = [];
-    this.row = row;
-    this.column = column;
     this.fleet = [];
   }
 
   createGrid() {
-    for (let i = 0; i < this.row; i++) {
+    for (let i = 0; i < 10; i++) {
       this.grid[i] = [''];
-      for (let j = 0; j < this.column; j++) {
+      for (let j = 0; j < 10; j++) {
         this.grid[i][j] = '';
       }
     }
@@ -31,24 +29,22 @@ class Gameboard {
 
     // if alignment is horizontal, add ship coordinates to shipPlacement array along the X axis
     if (alignment == 'horizontal') {
-      // TODO: test this
       if (this.outOfBounds(shipLength, y, this.column)) return;
       for (let i = 0; i < shipLength; i++) {
-        if (this.grid[x][y + i] !== '') return;
+        if (this.grid[x][y + i] !== '') return; // prevents placing a ship on top of another ship
         this.grid[x][y + i] = shipName;
-        console.log(`i: ${i}`);
       }
       // if alignment is vertical, add ship coordinates to shipPlacement array along the Y axis
     } else if (alignment == 'vertical') {
       // TODO: test this
       if (this.outOfBounds(shipLength, x, this.row)) return;
       for (let i = 0; i < shipLength; i++) {
-        // this.grid.push([x + i, y]);
         if (this.grid[x + i][y] !== '') return;
         this.grid[x + i][y] = shipName;
       }
     }
     this.addToFleet(ship);
+    console.log(this.grid);
     return this.grid;
   }
 
@@ -57,12 +53,14 @@ class Gameboard {
   }
 
   outOfBounds(shipLength, start, boardLength) {
-    console.log(shipLength + start[0] > boardLength);
     return shipLength + start[0] > boardLength;
   }
 
   // keep track of ship alignment
-  rotateShip() {}
+  // TODO
+  rotateShip(alignment) {
+    return alignment == 'vertical' ? 'horizontal' : 'vertical';
+  }
 
   // Gameboards should have a receiveAttack function that takes a pair of coordinates
   // determines whether or not the attack hit a ship and then sends the ‘hit’ function to the correct ship,
@@ -86,13 +84,26 @@ class Gameboard {
         this.getship('patrol boat').receiveHit();
         break;
       default:
+        // TODO: record misses with grid or with array.
+        // With array, no need to iterate over grid multiple times.
         this.grid[x][y] = 'miss';
+        this.missedAttacks.push([x, y]);
     }
   }
 
   getship(shipName) {
     let ship = this.fleet.find((ship) => ship.shipName == shipName);
     return ship;
+  }
+
+  // TODO: check if function is necessary
+  allSunk() {
+    const isSunk = function () {
+      this.getSunk() == true;
+    };
+    // const isSunk = this.getSunk() == true;
+
+    return this.fleet.every(isSunk);
   }
 
   // Gameboards should keep track of missed attacks so they can display them properly

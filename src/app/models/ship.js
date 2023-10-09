@@ -13,12 +13,14 @@ class Ship {
 
   receiveHit() {
     this._damage += 1;
+    if (this._damage == this.length) this.sunk();
   }
 
-  isSunk() {
-    if (this.hit == this.length) {
-      this.isSunk = true;
-    }
+  sunk() {
+    this.isSunk = true;
+  }
+  getSunk() {
+    return this.isSunk;
   }
 }
 
