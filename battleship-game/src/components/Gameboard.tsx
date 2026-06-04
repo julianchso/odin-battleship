@@ -1,13 +1,15 @@
 import React from 'react';
 
 import { Gameboard as GameboardType } from '../types/Gameboard';
+import { createShip } from '../game/createShip';
+import createGameBoard from '../game/createGameboard';
+
+import type { Ship } from '../game/createShip';
 
 function Gameboard() {
-  const [grid, setGrid] = React.useState<string[][]>(
-    Array.from({ length: 10 }, () => Array(10).fill('')),
-  );
+  const [grid, setGrid] = React.useState(createGameBoard(10));
 
-  const const [missedAttacks, setMissedAttacks] = [];
+  const [missedAttacks, setMissedAttacks] = [];
   const fleet = [];
 
   return <></>;

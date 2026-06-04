@@ -1,4 +1,4 @@
-export function ship({ length }: { length: number }) {
+export function createShip(length: number) {
   let hits = 0;
 
   return {
@@ -13,3 +13,5 @@ export function ship({ length }: { length: number }) {
     },
   };
 }
+
+export type Ship = ReturnType<typeof createShip>;
