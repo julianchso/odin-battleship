@@ -3,14 +3,6 @@ import { Ship } from './ship';
 // record where ships are by writing their name on coordinates when placing them.
 // if receiveAttack() is on a coordinate with shipName, increase ship hit() by 1.
 
-function Gameboard() {
-  const grid = [];
-  const missedAttacks = [];
-  const fleet = [];
-
-  return <></>;
-}
-
 class Gameboard {
   constructor() {
     this.grid = [];
