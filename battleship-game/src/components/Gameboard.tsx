@@ -1,18 +1,25 @@
-import React from 'react';
-
-import { Gameboard as GameboardType } from '../types/Gameboard';
-import { createShip } from '../game/createShip';
 import createGameBoard from '../game/createGameboard';
 
-import type { Ship } from '../game/createShip';
+type Gameboard = ReturnType<typeof createGameBoard>;
+type GameboardProps = {
+  gameboard: Gameboard;
+};
 
-function Gameboard() {
-  const [grid, setGrid] = React.useState(createGameBoard(10));
-
-  const [missedAttacks, setMissedAttacks] = [];
-  const fleet = [];
-
-  return <></>;
+function Gameboard({ gameboard }: GameboardProps) {
+  return (
+    <>
+      <div className='gameboard_grid'>
+        {gameboard.grid.flat().map((cell, index) => (
+          <button
+            key={index}
+            className={`gameboard_cell ${cell === null ? 'gameboard_cell-water' : 'gameboard_cell-ship'}`}
+          >
+            {cell === null ? '' : ''}
+          </button>
+        ))}
+      </div>
+    </>
+  );
 }
 
 export { Gameboard };

@@ -1,8 +1,10 @@
 import { createShip } from './createShip';
 import type { Ship } from './createShip';
 
+type GridCell = Ship | null;
+
 export default function createGameBoard(GBLength: number) {
-  const grid = Array.from({ length: GBLength }, () => Array(GBLength).fill(''));
+  const grid: GridCell[][] = Array.from({ length: GBLength }, () => Array(GBLength).fill(null));
   const shipList: Ship[] = [];
   const missedAttacks: [number, number][] = [];
   const attacksGrid = new Set<string>();
@@ -20,12 +22,12 @@ export default function createGameBoard(GBLength: number) {
     }
 
     if (alignment == 'horizontal') {
-      for (let i = 0; i < shipLength; i++) {
-        if (grid[row][col + i] === 1) {
-          return false;
-        }
+      if (col + shipLength > GBLength) {
+        return false;
+      }
 
-        if (col + shipLength > GBLength) {
+      for (let i = 0; i < shipLength; i++) {
+        if (grid[row][col + i] !== null) {
           return false;
         }
       }
@@ -40,12 +42,11 @@ export default function createGameBoard(GBLength: number) {
     }
 
     if (alignment == 'vertical') {
+      if (row + shipLength > GBLength) {
+        return false;
+      }
       for (let i = 0; i < shipLength; i++) {
-        if (grid[row + i][col] === 1) {
-          return false;
-        }
-
-        if (row + shipLength > GBLength) {
+        if (grid[row + i][col] !== null) {
           return false;
         }
       }
@@ -68,14 +69,24 @@ export default function createGameBoard(GBLength: number) {
       return;
     }
 
+    if (row < 0 || row >= GBLength || col < 0 || col >= GBLength) {
+      return;
+    }
+
     attacksGrid.add(key);
 
     if (cell !== null) {
       cell.hit();
+      return 'hit';
     } else {
       missedAttacks.push([row, col]);
+      return 'miss';
     }
   }
 
-  return { grid, placeShip, receiveAttack };
+  function allShipsSunk() {
+    return shipList.every((ship) => ship.isSunk());
+  }
+
+  return { grid, placeShip, receiveAttack, allShipsSunk };
 }
