@@ -15,11 +15,7 @@ export default function createGameBoard(GBLength: number) {
     shipLength: number,
     alignment: 'horizontal' | 'vertical',
   ) {
-    const shipsLength = [2, 3, 3, 4, 5];
-
-    for (let i = 0; i < shipsLength.length; i++) {
-      shipList.push(createShip(shipsLength[i]));
-    }
+    createShip(shipLength);
 
     if (alignment == 'horizontal') {
       if (col + shipLength > GBLength) {
