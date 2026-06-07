@@ -9,7 +9,6 @@ export function createShip(length: number) {
     },
 
     isSunk() {
-      console.log(`Ship length ${length}: ${hits}/${length}`);
       return hits >= length;
     },
   };

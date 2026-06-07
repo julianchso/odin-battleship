@@ -16,7 +16,10 @@ function Gameboard({ gameboard, handleAttack }: GameboardProps) {
               key={`${rowIndex}-${colIndex}`}
               onClick={() => handleAttack?.(rowIndex, colIndex)}
               disabled={!handleAttack}
-              className={`gameboard_cell ${cell === null ? 'gameboard_cell-water' : 'gameboard_cell-ship'}`}
+              className={`gameboard_cell ${cell === null ? 'gameboard_cell-water' : 'gameboard_cell-ship'}
+                ${gameboard.isMiss(rowIndex, colIndex) ? 'gameboard_cell-miss' : ''}
+                ${gameboard.isHit(rowIndex, colIndex) ? 'gameboard_cell-hit' : ''}
+              `}
             >
               {cell === null ? '' : ''}
             </button>

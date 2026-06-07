@@ -151,7 +151,7 @@ button {
 }
 
 .gameboard_grid {
-  border: solid 1px #000;
+  border: solid 1px #808080;
   height: 400px;
   width: 400px;
   display: grid;
@@ -160,7 +160,7 @@ button {
 }
 
 .gameboard_cell {
-  /* border: solid 1px #000; */
+  border: solid 1px #808080;
 }
 
 .gameboard_cell-ship {
@@ -168,7 +168,37 @@ button {
 }
 
 .gameboard_cell-water {
+  /* border: none; */
   background: lightskyblue;
+}
+
+.gameboard_cell-miss {
+  position: relative;
+}
+
+.gameboard_cell-miss::after {
+  content: '';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10px;
+  height: 10px;
+  background-color: #808080;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.gameboard_cell-hit {
+  position: relative;
+}
+
+.gameboard_cell-hit::after {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  content: '\274c';
+  color: rgb(206, 21, 21);
+  display: inline-block;
 }
 
 /* Gameboard end */

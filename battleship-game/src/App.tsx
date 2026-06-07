@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 
 import { Gameboard } from './components/Gameboard';
@@ -10,7 +10,7 @@ import './App.css';
 function App() {
   const [playerBoard] = useState(createPlayerBoard);
   const [computerBoard] = useState(createComputerBoard);
-  const [turns, setTurn] = useState<'player' | 'computer'>('player');
+  const [turn, setTurn] = useState<'player' | 'computer'>('player');
   const [winner, setWinner] = useState<'player' | 'computer' | null>(null);
 
   function createPlayerBoard() {
@@ -38,6 +38,10 @@ function App() {
   }
 
   function handlePlayerAttack(row: number, col: number) {
+    if (turn !== 'player') {
+      return;
+    }
+
     const gameOver = attack(row, col, computerBoard);
 
     if (gameOver) {
@@ -48,15 +52,24 @@ function App() {
   }
 
   function handleComputerAttack() {
-    const { row, col } = getComputerMoves();
+    const { row, col } = getComputerMoves(playerBoard);
     const gameOver = attack(row, col, playerBoard);
 
     if (gameOver) {
       setWinner('computer');
     }
-
     setTurn('player');
   }
+
+  useEffect(() => {
+    if (turn === 'computer') {
+      const timer = setTimeout(() => {
+        handleComputerAttack();
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [turn]);
 
   return (
     <>
