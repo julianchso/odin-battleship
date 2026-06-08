@@ -197,8 +197,13 @@ button {
   justify-content: center;
   align-items: center;
   content: '\274c';
+  object-fit: fill;
   color: rgb(206, 21, 21);
   display: inline-block;
+}
+
+.opacity-50 {
+  opacity: 0.5;
 }
 
 /* Gameboard end */
