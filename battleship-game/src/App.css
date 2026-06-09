@@ -150,17 +150,27 @@ button {
   align-items: center;
 }
 
-.gameboard_grid {
-  border: solid 1px #808080;
-  height: 400px;
-  width: 400px;
+.gameboard_wrapper {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: 25px repeat(10, 40px);
+  grid-template-rows: 25px repeat(10, 40px);
+  padding: 5px;
+}
+
+.gameboard_row-label {
+  align-self: center;
+}
+
+.gameboard_col-label {
+  justify-self: center;
 }
 
 .gameboard_cell {
   border: solid 1px #808080;
+}
+
+.gameboard_cell-computer:not(:disabled):hover {
+  opacity: 0.75;
 }
 
 .gameboard_cell-ship {
@@ -168,7 +178,6 @@ button {
 }
 
 .gameboard_cell-water {
-  /* border: none; */
   background: lightskyblue;
 }
 
