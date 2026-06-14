@@ -109,6 +109,7 @@ section {
 
 body {
   line-height: 1;
+  font-family: 'Nunito Sans', Arial, Helvetica, sans-serif;
 }
 
 ol,
@@ -136,6 +137,8 @@ table {
 
 button {
   cursor: pointer;
+  border: none;
+  margin: 0;
 }
 
 /* Gameboard start */
@@ -144,10 +147,27 @@ button {
   margin: 0 auto;
   height: 800px;
   width: 960px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  grid-template-columns: 2;
+  grid-template-rows: 2;
   align-items: center;
+  display: grid;
+}
+
+.gameboard_player {
+  grid-column-start: 1;
+  grid-column-end: 1;
+}
+
+.gameboard_computer {
+  grid-column-start: 2;
+  grid-column-end: 2;
+}
+
+.gameboard_playBtn_wrapper {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  align-self: center;
+  justify-self: center;
 }
 
 .gameboard_wrapper {
@@ -155,6 +175,34 @@ button {
   grid-template-columns: 25px repeat(10, 40px);
   grid-template-rows: 25px repeat(10, 40px);
   padding: 5px;
+}
+
+.gameboard_cell-battle {
+  cursor: pointer;
+}
+
+.gameboard_cell-battle:hover {
+  opacity: 0.5;
+}
+
+.gameboard_playBtn {
+  padding: 10px 20px;
+  font-size: 2em;
+  border: none;
+  border-radius: 10px;
+}
+
+.dnd_draggable_ship {
+  height: 40px;
+  width: 40px;
+  background-color: green;
+  border: none;
+}
+
+.dnd_droppable_cell {
+  height: 40px;
+  width: 40px;
+  background-color: yellow;
 }
 
 .gameboard_row-label {

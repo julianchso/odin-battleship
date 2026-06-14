@@ -14,11 +14,11 @@ export default function createGameBoard(GBLength: number) {
     row: number,
     col: number,
     shipLength: number,
-    alignment: 'horizontal' | 'vertical',
+    orientation: 'horizontal' | 'vertical',
   ) {
     createShip(shipLength);
 
-    if (alignment == 'horizontal') {
+    if (orientation == 'horizontal') {
       if (col + shipLength > GBLength) {
         return false;
       }
@@ -38,7 +38,7 @@ export default function createGameBoard(GBLength: number) {
       shipList.push(ship);
     }
 
-    if (alignment == 'vertical') {
+    if (orientation == 'vertical') {
       if (row + shipLength > GBLength) {
         return false;
       }
