@@ -100,5 +100,9 @@ export default function createGameBoard(GBLength: number) {
     return attacksHit.has(`${row},${col}`);
   }
 
-  return { grid, placeShip, receiveAttack, allShipsSunk, hasBeenAttacked, isMiss, isHit };
+  function hasShip(row: number, col: number) {
+    return grid[row][col] !== null;
+  }
+
+  return { grid, placeShip, receiveAttack, allShipsSunk, hasBeenAttacked, isMiss, isHit, hasShip };
 }

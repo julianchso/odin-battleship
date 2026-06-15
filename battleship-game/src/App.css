@@ -215,6 +215,9 @@ button {
 
 .gameboard_cell {
   border: solid 1px #808080;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .gameboard_cell-computer:not(:disabled):hover {
@@ -229,34 +232,16 @@ button {
   background: lightskyblue;
 }
 
-.gameboard_cell-miss {
-  position: relative;
-}
-
-.gameboard_cell-miss::after {
-  content: '';
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.gameboard_cell-miss-dot {
   width: 10px;
   height: 10px;
   background-color: #808080;
   border-radius: 50%;
-  display: inline-block;
-}
-
-.gameboard_cell-hit {
-  position: relative;
 }
 
 .gameboard_cell-hit::after {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   content: '\274c';
-  object-fit: fill;
   color: rgb(206, 21, 21);
-  display: inline-block;
 }
 
 .opacity-50 {

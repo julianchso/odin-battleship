@@ -21,7 +21,6 @@ function Gameboard({ gameboard, handleAttack, play }: GameboardProps) {
 
   return (
     <div className='gameboard_wrapper'>
-      <div />
       {letters.map((letter) => (
         <div className='gameboard_col-label' key={letter}>
           {letter}
@@ -30,30 +29,23 @@ function Gameboard({ gameboard, handleAttack, play }: GameboardProps) {
       {gameboard.grid.map((row, rowIndex) => (
         <React.Fragment key={rowIndex}>
           <div className='gameboard_row-label'>{rowIndex + 1}</div>
-          {/* <DragDropProvider
-            onDragEnd={(event) => {
-              if (event.canceled) return;
-            }}
-          >
-            {<DraggableShip length={5} />} */}
 
           {row.map((cell, colIndex) => (
             <>
-              <Cell row={rowIndex} col={colIndex} mode={mode}>
-                {gameboard.isMiss(rowIndex, colIndex) && <div className='gameboard_cell-miss' />}
-                {gameboard.isHit(rowIndex, colIndex) && <div className='gameboard_cell-hit' />}
-              </Cell>
-              {/* <button
+              <Cell
                 key={`${rowIndex}-${colIndex}`}
-                onClick={() => handleAttack?.(rowIndex, colIndex)}
-                disabled={!isClickable}
-                className={`gameboard_cell ${handleAttack ? 'gameboard_cell-computer' : ''} ${cell === null ? 'gameboard_cell-water' : 'gameboard_cell-ship'}
-                ${gameboard.isMiss(rowIndex, colIndex) ? 'gameboard_cell-miss' : ''}
-                ${gameboard.isHit(rowIndex, colIndex) ? 'gameboard_cell-hit' : ''}
-              `}
+                row={rowIndex}
+                col={colIndex}
+                id={`${rowIndex}-${colIndex}`}
+                mode={mode}
+                onAttack={handleAttack}
+                hasShip={gameboard.hasShip(rowIndex, colIndex)}
               >
-                {cell === null ? '' : ''}
-              </button> */}
+                {gameboard.isHit(rowIndex, colIndex) && <div className='gameboard_cell-hit' />}
+                {gameboard.isMiss(rowIndex, colIndex) && (
+                  <div className='gameboard_cell-miss-dot' />
+                )}
+              </Cell>
             </>
           ))}
         </React.Fragment>

@@ -1,12 +1,13 @@
 import { useDraggable } from '@dnd-kit/react';
 
 type DraggableShipProps = {
+  id: string;
   length: number;
 };
 
-export default function DraggableShip({ length }: DraggableShipProps) {
+export default function DraggableShip({ id, length }: DraggableShipProps) {
   const { ref } = useDraggable({
-    id: `ship-${length}`,
+    id: id,
   });
 
   return (

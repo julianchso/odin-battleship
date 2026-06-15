@@ -7,9 +7,10 @@ import { attack, getComputerMoves } from './game/playerActions';
 
 import DraggableShip from './components/draggableShip';
 import DroppableCell from './components/ShipPlacement';
+import { DragDropProvider } from '@dnd-kit/react';
+import ShipPanel from './components/ShipPanel';
 
 import './App.css';
-import { DragDropProvider } from '@dnd-kit/react';
 
 type ShipState = {
   id: string;
@@ -31,28 +32,17 @@ function App() {
     { id: 'ship-4', length: 4, isDropped: false },
     { id: 'ship-5', length: 5, isDropped: false },
   ]);
-  // const [isDropped, setIsDropped] = useState(false);
+  const [isDropped, setIsDropped] = useState(false);
   const [target, setTarget] = useState();
 
   function createPlayerBoard() {
     const board = createGameBoard(10);
-    // board.placeShip(0, 0, 5, 'vertical');
-    // board.placeShip(0, 2, 4, 'vertical');
-    // board.placeShip(0, 4, 3, 'vertical');
-    // board.placeShip(0, 6, 3, 'vertical');
-    board.placeShip(0, 8, 2, 'vertical');
 
     return board;
   }
 
   function createComputerBoard() {
     const board = createGameBoard(10);
-
-    // board.placeShip(0, 0, 5, 'horizontal');
-    // board.placeShip(2, 0, 4, 'horizontal');
-    // board.placeShip(4, 0, 3, 'horizontal');
-    // board.placeShip(6, 0, 3, 'horizontal');
-    board.placeShip(8, 0, 2, 'horizontal');
 
     return board;
   }
@@ -115,39 +105,27 @@ function App() {
     }
   }
 
+  function handleDragEnd(event) {
+    if (event.canceled) return;
+
+    const { target } = event.operation;
+    setIsDropped(target?.id === 'droppable');
+  }
+
   return (
     <>
       <h1>{winner === null ? '' : winner === 'player' ? 'Player Wins!' : 'Computer Wins!'}</h1>
-      {/* <DragDropProvider
-        onDragEnd={(event) => {
-          if (event.canceled) return;
-
-          const { target } = event.operation;
-          setIsDropped(target?.id === 'droppable');
-        }}
-      >
-        {!isDropped && <DraggableShip length={5} />}
-        {!isDropped && <DraggableShip length={4} />}
-        {!isDropped && <DraggableShip length={3} />}
-        {!isDropped && <DraggableShip length={3} />}
-        {!isDropped && <DraggableShip length={2} />}
-
-        <DroppableCell row={1} col={1} id='droppable'>
-          {isDropped && <DraggableShip length={5} />}
-          {isDropped && <DraggableShip length={4} />}
-          {isDropped && <DraggableShip length={4} />}
-          {isDropped && <DraggableShip length={3} />}
-          {isDropped && <DraggableShip length={2} />}
-        </DroppableCell>
-      </DragDropProvider> */}
-
       <div className='gameboard_playarea'>
-        <div className='gameboard_player'>
-          <Gameboard gameboard={playerBoard} play={play} />
-        </div>
-        <div className={`gameboard_computer ${!play ? 'opacity-50' : ''}`}>
-          <Gameboard gameboard={computerBoard} handleAttack={handlePlayerAttack} play={play} />
-        </div>
+        <DragDropProvider onDragEnd={handleDragEnd}>
+          <div className='gameboard_player'>
+            {/* {!isDropped && <DraggableShip />} */}
+            <Gameboard gameboard={playerBoard} play={play} />
+          </div>
+          <div className={`gameboard_computer ${!play ? 'opacity-50' : ''}`}>
+            <Gameboard gameboard={computerBoard} handleAttack={handlePlayerAttack} play={play} />
+          </div>
+          <ShipPanel />
+        </DragDropProvider>
         <div className='gameboard_playBtn_wrapper'>
           {!play ? (
             <button className='gameboard_playBtn' onClick={handlePlay}>
