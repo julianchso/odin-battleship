@@ -163,18 +163,32 @@ button {
   grid-column-end: 2;
 }
 
+.gameboard_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.gameboard_col {
+  display: flex;
+  flex-direction: row;
+}
+
+.gameboard_row {
+  display: grid;
+  grid-template-columns: repeat(11, 40px);
+  grid-template-rows: 40px;
+}
+
+.gameboard_cell {
+  width: 40px;
+  height: 40px;
+}
+
 .gameboard_playBtn_wrapper {
   grid-column-start: 1;
   grid-column-end: 3;
   align-self: center;
   justify-self: center;
-}
-
-.gameboard_wrapper {
-  display: grid;
-  grid-template-columns: 25px repeat(10, 40px);
-  grid-template-rows: 25px repeat(10, 40px);
-  padding: 5px;
 }
 
 .gameboard_cell-battle {
@@ -190,6 +204,12 @@ button {
   font-size: 2em;
   border: none;
   border-radius: 10px;
+}
+
+.draggable_ships {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0;
 }
 
 .dnd_draggable_ship {

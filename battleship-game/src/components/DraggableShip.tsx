@@ -12,13 +12,13 @@ export default function DraggableShip({ id, length }: DraggableShipProps) {
 
   return (
     <>
-      <button ref={ref}>
+      <div ref={ref} className='draggable_ships'>
         {[...Array(length).keys()].map((key) => (
           <div key={key} className='dnd_draggable_ship'>
             S
           </div>
         ))}
-      </button>
+      </div>
     </>
   );
 }

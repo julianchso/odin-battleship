@@ -1,10 +1,7 @@
 import React from 'react';
-import { DragDropProvider } from '@dnd-kit/react';
 
 import createGameBoard from '../game/createGameboard';
 import Cell from './Cell';
-import DroppableCell from './ShipPlacement';
-import DraggableShip from './draggableShip';
 
 type Gameboard = ReturnType<typeof createGameBoard>;
 
@@ -21,17 +18,19 @@ function Gameboard({ gameboard, handleAttack, play }: GameboardProps) {
 
   return (
     <div className='gameboard_wrapper'>
-      {letters.map((letter) => (
-        <div className='gameboard_col-label' key={letter}>
-          {letter}
-        </div>
-      ))}
-      {gameboard.grid.map((row, rowIndex) => (
-        <React.Fragment key={rowIndex}>
-          <div className='gameboard_row-label'>{rowIndex + 1}</div>
+      <div className='gameboard_col'>
+        {letters.map((letter) => (
+          <div className='gameboard_col-label' key={letter}>
+            {letter}
+          </div>
+        ))}
+      </div>
+      <div className='gameboard_grid'>
+        {gameboard.grid.map((row, rowIndex) => (
+          <div className='gameboard_row' key={rowIndex}>
+            <div className='gameboard_row-label'>{rowIndex + 1}</div>
 
-          {row.map((cell, colIndex) => (
-            <>
+            {row.map((cell, colIndex) => (
               <Cell
                 key={`${rowIndex}-${colIndex}`}
                 row={rowIndex}
@@ -46,10 +45,10 @@ function Gameboard({ gameboard, handleAttack, play }: GameboardProps) {
                   <div className='gameboard_cell-miss-dot' />
                 )}
               </Cell>
-            </>
-          ))}
-        </React.Fragment>
-      ))}
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

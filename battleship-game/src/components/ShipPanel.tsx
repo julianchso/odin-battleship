@@ -1,4 +1,4 @@
-import DraggableShip from './draggableShip';
+import DraggableShip from './DraggableShip';
 
 export default function ShipPanel() {
   const ships = [

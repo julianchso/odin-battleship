@@ -1,3 +1,5 @@
+import { useDroppable } from '@dnd-kit/react';
+
 type CellProps = {
   key: string;
   row: number;
@@ -12,6 +14,10 @@ type CellProps = {
 };
 
 export default function Cell({ row, col, mode, onAttack, hasShip, children }: CellProps) {
+  const { ref } = useDroppable({
+    id: `${row}-${col}`,
+  });
+
   const handleAttack = () => {
     if (mode === 'battle' && onAttack) {
       onAttack(row, col);
@@ -22,6 +28,7 @@ export default function Cell({ row, col, mode, onAttack, hasShip, children }: Ce
     <div
       className={`gameboard_cell gameboard_cell-${mode} ${hasShip ? 'gameboard_cell-ship' : 'gameboard_cell-water'}`}
       onClick={handleAttack}
+      ref={ref}
     >
       {children}
     </div>

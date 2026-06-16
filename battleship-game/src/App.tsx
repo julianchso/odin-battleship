@@ -5,9 +5,9 @@ import { Gameboard } from './components/Gameboard';
 import createGameBoard from './game/createGameboard';
 import { attack, getComputerMoves } from './game/playerActions';
 
-import DraggableShip from './components/draggableShip';
-import DroppableCell from './components/ShipPlacement';
 import { DragDropProvider } from '@dnd-kit/react';
+import { useDroppable } from '@dnd-kit/react';
+import TestDrop from './components/Test';
 import ShipPanel from './components/ShipPanel';
 
 import './App.css';
@@ -26,13 +26,13 @@ function App() {
   const [winner, setWinner] = useState<'player' | 'computer' | null>(null);
 
   const [ships, setShips] = useState<ShipState[]>([
-    { id: 'ship-2', length: 2, isDropped: false },
-    { id: 'ship-3-1', length: 3, isDropped: false },
-    { id: 'ship-3-2', length: 3, isDropped: false },
-    { id: 'ship-4', length: 4, isDropped: false },
-    { id: 'ship-5', length: 5, isDropped: false },
+    { id: 'patrol-boat', length: 2, isDropped: false },
+    { id: 'destroyer', length: 3, isDropped: false },
+    { id: 'submarine', length: 3, isDropped: false },
+    { id: 'battleship', length: 4, isDropped: false },
+    { id: 'carrier', length: 5, isDropped: false },
   ]);
-  const [isDropped, setIsDropped] = useState(false);
+
   const [target, setTarget] = useState();
 
   function createPlayerBoard() {
@@ -108,8 +108,25 @@ function App() {
   function handleDragEnd(event) {
     if (event.canceled) return;
 
-    const { target } = event.operation;
-    setIsDropped(target?.id === 'droppable');
+    const { source, target } = event.operation;
+
+    console.log('source:', source);
+    console.log('target:', target);
+
+    setShips((prev) => {
+      return prev.map((ship) => {
+        if (ship.id === source.id) {
+          return {
+            ...ship,
+            isDropped: !!target,
+            row,
+            col,
+          };
+        }
+
+        return ship;
+      });
+    });
   }
 
   return (
@@ -118,13 +135,13 @@ function App() {
       <div className='gameboard_playarea'>
         <DragDropProvider onDragEnd={handleDragEnd}>
           <div className='gameboard_player'>
-            {/* {!isDropped && <DraggableShip />} */}
             <Gameboard gameboard={playerBoard} play={play} />
           </div>
           <div className={`gameboard_computer ${!play ? 'opacity-50' : ''}`}>
             <Gameboard gameboard={computerBoard} handleAttack={handlePlayerAttack} play={play} />
           </div>
           <ShipPanel />
+          <TestDrop />
         </DragDropProvider>
         <div className='gameboard_playBtn_wrapper'>
           {!play ? (
