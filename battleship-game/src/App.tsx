@@ -4,18 +4,18 @@ import { useState } from 'react';
 import { Gameboard } from './components/Gameboard';
 import createGameBoard from './game/createGameboard';
 import { attack, getComputerMoves } from './game/playerActions';
+import { randomShipPlacement } from './game/randomShipPlacement';
 
 import { DragDropProvider } from '@dnd-kit/react';
-import { useDroppable } from '@dnd-kit/react';
-import TestDrop from './components/Test';
 import ShipPanel from './components/ShipPanel';
 
 import './App.css';
 
-type ShipState = {
+export type ShipState = {
   id: string;
   length: number;
-  isDropped: boolean;
+  row: number | null;
+  col: number | null;
 };
 
 function App() {
@@ -24,25 +24,35 @@ function App() {
   const [computerBoard, setComputerBoard] = useState(createComputerBoard);
   const [turn, setTurn] = useState<'player' | 'computer'>('player');
   const [winner, setWinner] = useState<'player' | 'computer' | null>(null);
+  const [target, setTarget] = useState();
 
   const [ships, setShips] = useState<ShipState[]>([
-    { id: 'patrol-boat', length: 2, isDropped: false },
-    { id: 'destroyer', length: 3, isDropped: false },
-    { id: 'submarine', length: 3, isDropped: false },
-    { id: 'battleship', length: 4, isDropped: false },
-    { id: 'carrier', length: 5, isDropped: false },
+    { id: 'carrier', length: 5, row: null, col: null },
+    { id: 'battleship', length: 4, row: null, col: null },
+    { id: 'destroyer', length: 3, row: null, col: null },
+    { id: 'submarine', length: 3, row: null, col: null },
+    { id: 'patrol-boat', length: 2, row: null, col: null },
   ]);
-
-  const [target, setTarget] = useState();
 
   function createPlayerBoard() {
     const board = createGameBoard(10);
+
+    const shipLengths = [5, 4, 3, 3, 2];
+
+    shipLengths.map((length) => {
+      randomShipPlacement(board, length);
+    });
 
     return board;
   }
 
   function createComputerBoard() {
     const board = createGameBoard(10);
+    const shipLengths = [5, 4, 3, 3, 2];
+
+    shipLengths.map((length) => {
+      randomShipPlacement(board, length);
+    });
 
     return board;
   }
@@ -109,16 +119,15 @@ function App() {
     if (event.canceled) return;
 
     const { source, target } = event.operation;
+    if (!target) return;
 
-    console.log('source:', source);
-    console.log('target:', target);
+    const [, row, col] = target.id.split('-').map(Number);
 
     setShips((prev) => {
       return prev.map((ship) => {
         if (ship.id === source.id) {
           return {
             ...ship,
-            isDropped: !!target,
             row,
             col,
           };
@@ -127,7 +136,13 @@ function App() {
         return ship;
       });
     });
+
+    setTarget(event.operation.target?.id);
   }
+
+  // useEffect(() => {
+  //   console.log(ships);
+  // });
 
   return (
     <>
@@ -135,13 +150,18 @@ function App() {
       <div className='gameboard_playarea'>
         <DragDropProvider onDragEnd={handleDragEnd}>
           <div className='gameboard_player'>
-            <Gameboard gameboard={playerBoard} play={play} />
+            <Gameboard gameboard={playerBoard} boardType='player' play={play} ships={ships} />
           </div>
           <div className={`gameboard_computer ${!play ? 'opacity-50' : ''}`}>
-            <Gameboard gameboard={computerBoard} handleAttack={handlePlayerAttack} play={play} />
+            <Gameboard
+              gameboard={computerBoard}
+              boardType='computer'
+              handleAttack={handlePlayerAttack}
+              play={play}
+              ships={[]}
+            />
           </div>
-          <ShipPanel />
-          <TestDrop />
+          <ShipPanel ships={ships} />
         </DragDropProvider>
         <div className='gameboard_playBtn_wrapper'>
           {!play ? (

@@ -7,15 +7,23 @@ type CellProps = {
   id: string;
   mode: 'prepare' | 'battle';
   onAttack?: (row: number, col: number) => void;
-  // isHit: boolean;
-  // isMiss: boolean;
   hasShip: boolean;
   children?: React.ReactNode;
+  boardType: 'player' | 'computer';
 };
 
-export default function Cell({ row, col, mode, onAttack, hasShip, children }: CellProps) {
+export default function Cell({
+  row,
+  col,
+  mode,
+  onAttack,
+  hasShip,
+  children,
+  boardType,
+}: CellProps) {
   const { ref } = useDroppable({
-    id: `${row}-${col}`,
+    id: `${boardType}-${row}-${col}`,
+    disabled: boardType === 'computer',
   });
 
   const handleAttack = () => {
@@ -29,7 +37,9 @@ export default function Cell({ row, col, mode, onAttack, hasShip, children }: Ce
       className={`gameboard_cell gameboard_cell-${mode} ${hasShip ? 'gameboard_cell-ship' : 'gameboard_cell-water'}`}
       onClick={handleAttack}
       ref={ref}
+      data-id={`${boardType}-${row}-${col}`}
     >
+      {row},{col}
       {children}
     </div>
   );

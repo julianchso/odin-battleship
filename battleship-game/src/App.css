@@ -168,15 +168,25 @@ button {
   flex-direction: column;
 }
 
-.gameboard_col {
-  display: flex;
-  flex-direction: row;
+.gameboard_grid {
+  display: grid;
+  grid-template-rows: repeat(10, 40px);
+  grid-template-columns: 40px repeat(10, 40px);
 }
 
-.gameboard_row {
+.gameboard_col {
+  display: grid;
+  grid-template-columns: repeat(11, 40px);
+}
+
+/* .gameboard_row {
   display: grid;
   grid-template-columns: repeat(11, 40px);
   grid-template-rows: 40px;
+} */
+
+.gameboard_row {
+  display: contents;
 }
 
 .gameboard_cell {
@@ -231,6 +241,7 @@ button {
 
 .gameboard_col-label {
   justify-self: center;
+  margin-bottom: 10px;
 }
 
 .gameboard_cell {
