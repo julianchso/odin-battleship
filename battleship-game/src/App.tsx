@@ -4,18 +4,22 @@ import { useState } from 'react';
 import { Gameboard } from './components/Gameboard';
 import createGameBoard from './game/createGameboard';
 import { attack, getComputerMoves } from './game/playerActions';
-import { randomShipPlacement } from './game/randomShipPlacement';
+import { placeRandomShips } from './game/placeRandomShips';
 
 import { DragDropProvider } from '@dnd-kit/react';
 import ShipPanel from './components/ShipPanel';
 
 import './App.css';
+import { generateRandomShips } from './game/generaterandomShips';
+
+export type ShipId = 'carrier' | 'battleship' | 'destroyer' | 'submarine' | 'patrol-boat';
 
 export type ShipState = {
-  id: string;
+  id: ShipId;
   length: number;
   row: number | null;
   col: number | null;
+  orientation: 'horizontal' | 'vertical';
 };
 
 function App() {
@@ -25,13 +29,14 @@ function App() {
   const [turn, setTurn] = useState<'player' | 'computer'>('player');
   const [winner, setWinner] = useState<'player' | 'computer' | null>(null);
   const [target, setTarget] = useState();
+  const [randomize, setRandomize] = useState();
 
   const [ships, setShips] = useState<ShipState[]>([
-    { id: 'carrier', length: 5, row: null, col: null },
-    { id: 'battleship', length: 4, row: null, col: null },
-    { id: 'destroyer', length: 3, row: null, col: null },
-    { id: 'submarine', length: 3, row: null, col: null },
-    { id: 'patrol-boat', length: 2, row: null, col: null },
+    { id: 'carrier', length: 5, row: null, col: null, orientation: null },
+    { id: 'battleship', length: 4, row: null, col: null, orientation: null },
+    { id: 'destroyer', length: 3, row: null, col: null, orientation: null },
+    { id: 'submarine', length: 3, row: null, col: null, orientation: null },
+    { id: 'patrol-boat', length: 2, row: null, col: null, orientation: null },
   ]);
 
   function createPlayerBoard() {
@@ -39,9 +44,9 @@ function App() {
 
     const shipLengths = [5, 4, 3, 3, 2];
 
-    shipLengths.map((length) => {
-      randomShipPlacement(board, length);
-    });
+    // shipLengths.forEach((length) => {
+    //   placeRandomShips(board, length);
+    // });
 
     return board;
   }
@@ -51,7 +56,7 @@ function App() {
     const shipLengths = [5, 4, 3, 3, 2];
 
     shipLengths.map((length) => {
-      randomShipPlacement(board, length);
+      placeRandomShips(board, length);
     });
 
     return board;
@@ -115,6 +120,10 @@ function App() {
     }
   }
 
+  function handleRandomizeShips() {
+    setShips(generateRandomShips());
+  }
+
   function handleDragEnd(event) {
     if (event.canceled) return;
 
@@ -164,6 +173,13 @@ function App() {
           <ShipPanel ships={ships} />
         </DragDropProvider>
         <div className='gameboard_playBtn_wrapper'>
+          {!play ? (
+            <button className='gameboard_randomBtn' onClick={handleRandomizeShips}>
+              Randomize
+            </button>
+          ) : (
+            ''
+          )}
           {!play ? (
             <button className='gameboard_playBtn' onClick={handlePlay}>
               {winner ? 'Play Again' : 'play'}

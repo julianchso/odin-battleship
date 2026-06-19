@@ -1,7 +1,7 @@
 import type { Gameboard } from '../components/Gameboard';
 
-export function randomShipPlacement(board: Gameboard, length: number) {
-  let placed = false;
+export function placeRandomShips(board: Gameboard, length: number) {
+  let placed: boolean | undefined = false;
 
   while (!placed) {
     const randomRowIndex = Math.floor(Math.random() * 10);

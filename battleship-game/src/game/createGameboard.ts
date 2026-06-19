@@ -1,7 +1,8 @@
 import { createShip } from './createShip';
+import { validatePlacement } from './validatePlacement';
 import type { Ship } from './createShip';
 
-type GridCell = Ship | null;
+export type GridCell = Ship | null;
 
 export default function createGameBoard(GBLength: number) {
   const grid: GridCell[][] = Array.from({ length: GBLength }, () => Array(GBLength).fill(null));
@@ -18,18 +19,13 @@ export default function createGameBoard(GBLength: number) {
   ) {
     createShip(shipLength);
 
+    if (!validatePlacement({ grid, row, col, orientation, shipLength, GBLength })) {
+      return false;
+    }
+
     if (orientation == 'horizontal') {
-      if (col + shipLength > GBLength) {
-        console.log('horizontal out of bounds');
+      if (!validatePlacement({ grid, row, col, orientation, shipLength, GBLength })) {
         return false;
-      }
-
-      for (let i = 0; i < shipLength; i++) {
-        if (grid[row][col + i] !== null) {
-          console.log('horizontal overlap');
-
-          return false;
-        }
       }
 
       const ship = createShip(shipLength);
@@ -43,16 +39,8 @@ export default function createGameBoard(GBLength: number) {
     }
 
     if (orientation == 'vertical') {
-      if (row + shipLength > GBLength) {
-        console.log('vertical out of bounds');
+      if (!validatePlacement({ grid, row, col, orientation, shipLength, GBLength })) {
         return false;
-      }
-
-      for (let i = 0; i < shipLength; i++) {
-        if (grid[row + i][col] !== null) {
-          console.log('vertical overlap');
-          return false;
-        }
       }
 
       const ship = createShip(shipLength);
@@ -113,5 +101,15 @@ export default function createGameBoard(GBLength: number) {
     return grid[row][col] !== null;
   }
 
-  return { grid, placeShip, receiveAttack, allShipsSunk, hasBeenAttacked, isMiss, isHit, hasShip };
+  return {
+    grid,
+    placeShip,
+    shipList,
+    receiveAttack,
+    allShipsSunk,
+    hasBeenAttacked,
+    isMiss,
+    isHit,
+    hasShip,
+  };
 }
