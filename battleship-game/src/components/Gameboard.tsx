@@ -1,7 +1,7 @@
 import createGameBoard from '../game/createGameboard';
 import Cell from './Cell';
 import DraggableShip from './DraggableShip';
-import type { ShipState } from '../App';
+import type { ShipId, ShipState } from '../types/ship';
 
 type Gameboard = ReturnType<typeof createGameBoard>;
 
@@ -11,9 +11,18 @@ type GameboardProps = {
   play: boolean;
   boardType: 'player' | 'computer';
   ships?: ShipState[];
+  mode: 'prepare' | 'battle';
+  onRotateShip: (id: ShipId) => void;
 };
 
-function Gameboard({ gameboard, handleAttack, play, boardType, ships }: GameboardProps) {
+function Gameboard({
+  gameboard,
+  handleAttack,
+  play,
+  boardType,
+  ships,
+  onRotateShip,
+}: GameboardProps) {
   const mode = play && handleAttack ? 'battle' : 'prepare';
   const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
@@ -44,6 +53,7 @@ function Gameboard({ gameboard, handleAttack, play, boardType, ships }: Gameboar
                 onAttack={handleAttack}
                 hasShip={gameboard.hasShip(rowIndex, colIndex)}
                 boardType={boardType}
+                play={play}
               >
                 {gameboard.isHit(rowIndex, colIndex) && <div className='gameboard_cell-hit' />}
 
@@ -63,6 +73,9 @@ function Gameboard({ gameboard, handleAttack, play, boardType, ships }: Gameboar
               row={ship.row}
               col={ship.col}
               length={ship.length}
+              orientation={ship.orientation}
+              play={play}
+              onRotate={onRotateShip}
             />
           ))}
       </div>

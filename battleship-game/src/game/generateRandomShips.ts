@@ -1,5 +1,5 @@
 import createGameBoard from './createGameboard';
-import type { ShipState, ShipId } from '../App';
+import type { ShipId, ShipState } from '../types/ship';
 
 export function generateRandomShips(): ShipState[] {
   const tempBoard = createGameBoard(10);

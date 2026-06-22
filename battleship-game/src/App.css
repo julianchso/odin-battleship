@@ -158,6 +158,11 @@ button {
   grid-column-end: 1;
 }
 
+.gameboard_ships-layer {
+  position: absolute;
+  inset: 0;
+}
+
 .gameboard_computer {
   grid-column-start: 2;
   grid-column-end: 2;
@@ -201,6 +206,10 @@ button {
   justify-self: center;
 }
 
+.gameboard_player_wrapper {
+  position: relative;
+}
+
 .gameboard_cell-battle {
   cursor: pointer;
 }
@@ -218,7 +227,7 @@ button {
 
 .draggable_ships {
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   padding: 10px 0;
 }
 

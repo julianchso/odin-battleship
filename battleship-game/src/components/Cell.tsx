@@ -5,11 +5,12 @@ type CellProps = {
   row: number;
   col: number;
   id: string;
-  mode: 'prepare' | 'battle';
   onAttack?: (row: number, col: number) => void;
   hasShip: boolean;
   children?: React.ReactNode;
   boardType: 'player' | 'computer';
+  play: boolean;
+  mode: 'prepare' | 'battle';
 };
 
 export default function Cell({
@@ -20,10 +21,11 @@ export default function Cell({
   hasShip,
   children,
   boardType,
+  play,
 }: CellProps) {
   const { ref } = useDroppable({
     id: `${boardType}-${row}-${col}`,
-    disabled: boardType === 'computer',
+    // disabled: boardType === 'computer' || play,
   });
 
   const handleAttack = () => {

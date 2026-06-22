@@ -17,42 +17,27 @@ export default function createGameBoard(GBLength: number) {
     shipLength: number,
     orientation: 'horizontal' | 'vertical',
   ) {
-    createShip(shipLength);
+    const ship = createShip(shipLength);
 
     if (!validatePlacement({ grid, row, col, orientation, shipLength, GBLength })) {
       return false;
     }
 
     if (orientation == 'horizontal') {
-      if (!validatePlacement({ grid, row, col, orientation, shipLength, GBLength })) {
-        return false;
-      }
-
-      const ship = createShip(shipLength);
-
       for (let i = 0; i < shipLength; i++) {
         grid[row][col + i] = ship;
       }
-
-      shipList.push(ship);
-      return true;
     }
 
     if (orientation == 'vertical') {
-      if (!validatePlacement({ grid, row, col, orientation, shipLength, GBLength })) {
-        return false;
-      }
-
-      const ship = createShip(shipLength);
-
       for (let i = 0; i < shipLength; i++) {
         grid[row + i][col] = ship;
       }
-
-      shipList.push(ship);
-      return true;
     }
-    return false;
+
+    shipList.push(ship);
+
+    return true;
   }
 
   function receiveAttack(row: number, col: number) {

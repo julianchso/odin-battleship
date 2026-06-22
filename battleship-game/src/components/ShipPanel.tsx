@@ -11,7 +11,12 @@ export default function ShipPanel({ ships }: ShipPanelProps) {
       {ships
         .filter((ship) => ship.row === null)
         .map((ship) => (
-          <DraggableShip key={ship.id} id={ship.id} length={ship.length} />
+          <DraggableShip
+            key={ship.id}
+            id={ship.id}
+            length={ship.length}
+            orientation={ship.orientation}
+          />
         ))}
     </div>
   );

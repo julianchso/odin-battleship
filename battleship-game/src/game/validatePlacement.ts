@@ -19,14 +19,11 @@ export function validatePlacement({
 }: ValidatePlacementProps) {
   if (orientation == 'horizontal') {
     if (col + shipLength > GBLength) {
-      console.log('horizontal out of bounds');
       return false;
     }
 
     for (let i = 0; i < shipLength; i++) {
       if (grid[row][col + i] !== null) {
-        console.log('horizontal overlap');
-
         return false;
       }
     }
@@ -34,13 +31,11 @@ export function validatePlacement({
 
   if (orientation == 'vertical') {
     if (row + shipLength > GBLength) {
-      console.log('vertical out of bounds');
       return false;
     }
 
     for (let i = 0; i < shipLength; i++) {
       if (grid[row + i][col] !== null) {
-        console.log('vertical overlap');
         return false;
       }
     }

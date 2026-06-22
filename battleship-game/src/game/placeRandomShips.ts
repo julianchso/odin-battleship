@@ -9,7 +9,7 @@ export function placeRandomShips(board: Gameboard, length: number) {
 
     const isHorizontal = Math.random() < 0.5 ? 'horizontal' : 'vertical';
 
-    console.log(`${randomRowIndex}, ${randomColIndex}`);
+    // console.log(`${randomRowIndex}, ${randomColIndex}`);
 
     placed = board.placeShip(randomRowIndex, randomColIndex, length, isHorizontal);
   }
