@@ -28,20 +28,12 @@ function Gameboard({
 
   return (
     <div className='gameboard_wrapper'>
-      <div className='gameboard_col'>
-        <div>{/* empty cell for corner*/}</div>
-        {letters.map((letter) => (
-          <div className='gameboard_col-label' key={letter}>
-            {letter}
-          </div>
-        ))}
-      </div>
       <div className='gameboard_grid'>
         {gameboard.grid.map((row, rowIndex) => (
           <>
-            <div className='gameboard_row-label' key={`row-${rowIndex}`}>
+            {/* <div className='gameboard_row-label' key={`row-${rowIndex}`}>
               {rowIndex + 1}
-            </div>
+            </div> */}
 
             {row.map((cell, colIndex) => (
               <Cell

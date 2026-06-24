@@ -26,17 +26,21 @@ export default function DraggableShip({
     disabled: play,
   });
 
+  const cellSize = parseInt(
+    getComputedStyle(document.documentElement).getPropertyValue('--cell-size'),
+  );
+
   return (
     <div
       ref={ref}
-      className='draggable_ships'
+      className={`draggable_ships ${orientation === 'horizontal' ? 'horizontal' : 'vertical'}`}
       onClick={() => onRotate(id)}
       style={{
-        gridColumn:
-          orientation === 'horizontal' ? `${(col ?? 0) + 2} / span ${length}` : `${(col ?? 0) + 2}`,
-
-        gridRow:
-          orientation === 'vertical' ? `${(row ?? 0) + 2} / span ${length}` : `${(row ?? 0) + 2}`,
+        position: 'absolute',
+        left: col! * cellSize,
+        top: row! * cellSize,
+        width: orientation === 'horizontal' ? length * cellSize : cellSize,
+        height: orientation === 'vertical' ? length * cellSize : cellSize,
       }}
     >
       {[...Array(length)].map((_, i) => (

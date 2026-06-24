@@ -141,6 +141,11 @@ button {
   margin: 0;
 }
 
+:root {
+  --cell-size: 40px;
+  --cell-number: 10;
+}
+
 /* Gameboard start */
 
 .gameboard_playarea {
@@ -156,11 +161,8 @@ button {
 .gameboard_player {
   grid-column-start: 1;
   grid-column-end: 1;
-}
-
-.gameboard_ships-layer {
-  position: absolute;
-  inset: 0;
+  height: calc(var(--cell-size) * var(--cell-number));
+  width: calc(var(--cell-size) * var(--cell-number));
 }
 
 .gameboard_computer {
@@ -170,24 +172,35 @@ button {
 
 .gameboard_wrapper {
   display: flex;
-  flex-direction: column;
+  height: calc(var(--cell-size) * var(--cell-number));
+  width: calc(var(--cell-size) * var(--cell-number));
 }
 
 .gameboard_grid {
   display: grid;
-  grid-template-rows: repeat(10, 40px);
-  grid-template-columns: 40px repeat(10, 40px);
+  height: calc(var(--cell-size) * var(--cell-number));
+  width: calc(var(--cell-size) * var(--cell-number));
+  grid-template-rows: repeat(var(--cell-number), var(--cell-size));
+  grid-template-columns: repeat(var(--cell-number), var(--cell-size));
 }
 
 .gameboard_col {
   display: grid;
-  grid-template-columns: repeat(11, 40px);
+  grid-template-columns: repeat(var(--cell-number), var(--cell-size));
+}
+
+.ship_layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  height: calc(var(--cell-size) * var(--cell-number));
+  width: calc(var(--cell-size) * var(--cell-number));
 }
 
 /* .gameboard_row {
   display: grid;
-  grid-template-columns: repeat(11, 40px);
-  grid-template-rows: 40px;
+  grid-template-columns: repeat(11, var(--cell-size));
+  grid-template-rows: var(--cell-size);
 } */
 
 .gameboard_row {
@@ -195,8 +208,8 @@ button {
 }
 
 .gameboard_cell {
-  width: 40px;
-  height: 40px;
+  width: var(--cell-size);
+  height: var(--cell-size);
 }
 
 .gameboard_playBtn_wrapper {
@@ -208,6 +221,8 @@ button {
 
 .gameboard_player_wrapper {
   position: relative;
+  height: calc(var(--cell-size) * var(--cell-number));
+  width: calc(var(--cell-size) * var(--cell-number));
 }
 
 .gameboard_cell-battle {
@@ -225,22 +240,31 @@ button {
   border-radius: 10px;
 }
 
-.draggable_ships {
+.draggable_ships.horizontal {
   display: flex;
-  /* flex-direction: row; */
-  padding: 10px 0;
+  flex-direction: row;
+}
+
+.draggable_ships.vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.ship_panel {
+  display: flex;
+  flex-direction: column;
 }
 
 .dnd_draggable_ship {
-  height: 40px;
-  width: 40px;
+  height: var(--cell-size);
+  width: var(--cell-size);
   background-color: green;
   border: none;
 }
 
 .dnd_droppable_cell {
-  height: 40px;
-  width: 40px;
+  height: var(--cell-size);
+  width: var(--cell-size);
   background-color: yellow;
 }
 

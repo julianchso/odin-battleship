@@ -9,9 +9,11 @@ import { placeRandomShips } from './game/placeRandomShips';
 import { validatePlacement } from './game/validatePlacement';
 import { generateRandomShips } from './game/generateRandomShips';
 import ShipPanel from './components/ShipPanel';
+import ShipLayer from './components/ShipLayer';
+
+import type { ShipId, ShipState } from './types/ship';
 
 import './App.css';
-import type { ShipId, ShipState } from './types/ship';
 
 function App() {
   const [play, setPlay] = useState(false);
@@ -116,6 +118,12 @@ function App() {
     );
   }
 
+  function allShipPlaced() {
+    return ships.every((ship) => {
+      return ship.row !== null && ship.col !== null;
+    });
+  }
+
   function startNewGame() {
     const newPlayerBoard = createPlayerBoard();
     const newComputerBoard = createComputerBoard();
@@ -202,7 +210,7 @@ function App() {
                 ships={ships}
                 onRotateShip={handleRotateShip}
               />
-              {/* <div className='gameboard_ships-layer'></div> */}
+              <ShipLayer />
             </div>
           </div>
           <div className={`gameboard_computer ${!play ? 'opacity-50' : ''}`}>
@@ -222,7 +230,11 @@ function App() {
               <button className='gameboard_randomBtn' onClick={handleRandomizeShips}>
                 Randomize
               </button>
-              <button className='gameboard_playBtn' onClick={handlePlay}>
+              <button
+                className='gameboard_playBtn'
+                onClick={handlePlay}
+                disabled={!allShipPlaced()}
+              >
                 Play
               </button>
             </>
