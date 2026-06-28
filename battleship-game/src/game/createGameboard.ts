@@ -1,5 +1,6 @@
 import { createShip } from './createShip';
-import { validatePlacement } from './validatePlacement';
+import { validatePlacementShips } from './validatePlacementShips';
+import validatePlacementBoard from './validatePlacementBoard';
 import type { Ship } from './createShip';
 
 export type GridCell = Ship | null;
@@ -19,7 +20,29 @@ export default function createGameBoard(GBLength: number) {
   ) {
     const ship = createShip(shipLength);
 
-    if (!validatePlacement({ grid, row, col, orientation, shipLength, GBLength })) {
+    // if (
+    //   !validatePlacementShips({
+    //     row,
+    //     col,
+    //     orientation,
+    //     shipLength,
+    //     existingShips: shipList,
+    //     GBLength,
+    //   })
+    // ) {
+    //   return false;
+    // }
+
+    if (
+      !validatePlacementBoard({
+        row,
+        col,
+        orientation,
+        shipLength,
+        grid,
+        GBLength,
+      })
+    ) {
       return false;
     }
 

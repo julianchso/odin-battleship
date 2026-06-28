@@ -6,7 +6,7 @@ import createGameBoard from './game/createGameboard';
 import { Gameboard } from './components/Gameboard';
 import { attack, getComputerMoves } from './game/playerActions';
 import { placeRandomShips } from './game/placeRandomShips';
-import { validatePlacement } from './game/validatePlacement';
+import { validatePlacementShips } from './game/validatePlacementShips';
 import { generateRandomShips } from './game/generateRandomShips';
 import ShipPanel from './components/ShipPanel';
 import ShipLayer from './components/ShipLayer';
@@ -96,14 +96,18 @@ function App() {
 
         const newOrientation = ship.orientation === 'horizontal' ? 'vertical' : 'horizontal';
 
-        // Validate before rotating
-        const valid = validatePlacement({
-          grid: playerBoard.grid,
-          row: ship.row!,
-          col: ship.col!,
+        if (ship.row == null || ship.col == null) {
+          return ship;
+        }
+
+        const valid = validatePlacementShips({
+          // grid: playerBoard.grid,
+          row: ship.row,
+          col: ship.col,
           orientation: newOrientation,
           shipLength: ship.length,
-          GBLength: 10,
+          existingShips: ships.filter((s) => s.id !== ship.id),
+          GBLength: playerBoard.grid.length,
         });
 
         if (!valid) {
@@ -171,6 +175,23 @@ function App() {
 
     const [, row, col] = target.id.split('-').map(Number);
 
+    const ship = ships.find((s) => s.id === source.id);
+
+    if (!ship) return;
+
+    const valid = validatePlacementShips({
+      row,
+      col,
+      orientation: ship.orientation,
+      shipLength: ship.length,
+      existingShips: ships.filter((s) => s.id !== ship.id),
+      GBLength: playerBoard.grid.length,
+    });
+
+    if (!valid) {
+      return;
+    }
+
     setShips((prev) => {
       return prev.map((ship) => {
         if (ship.id === source.id) {
@@ -188,13 +209,13 @@ function App() {
     setTarget(event.operation.target?.id);
   }
 
-  useEffect(() => {
-    // console.log(playerBoard.shipList);
-    console.log(ships);
-    // console.log(`computer: ${computerBoard.shipList}`);
-    // console.log(playerBoard.shipList.length);
-    // console.log(ships.length);
-  });
+  // useEffect(() => {
+  //   console.log(playerBoard.shipList);
+  //   console.log(ships);
+  //   console.log(`computer: ${computerBoard.shipList}`);
+  //   console.log(playerBoard.shipList.length);
+  //   console.log(ships.length);
+  // });
 
   return (
     <>

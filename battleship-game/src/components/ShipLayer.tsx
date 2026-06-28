@@ -1,8 +1,7 @@
 import { useDroppable } from '@dnd-kit/react';
 
 type ShipLayerProps = {
-  row: number;
-  col: number;
+  valid: boolean;
 };
 
 export default function ShipLayer() {
@@ -10,13 +9,5 @@ export default function ShipLayer() {
     id: `ship-layer`,
   });
 
-  const cellSize = parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue('--cell-size'),
-  );
-
-  return (
-    <div className={`ship_layer`} ref={ref} data-id={`ship-layer`}>
-      <span></span>
-    </div>
-  );
+  return <div className={`ship_layer`} ref={ref} data-id={`ship-layer`}></div>;
 }

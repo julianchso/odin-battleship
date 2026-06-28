@@ -1,31 +1,25 @@
 import type { GridCell } from './createGameboard';
 
-type ValidatePlacementProps = {
-  grid: GridCell[][];
+type ValidatePlacementBoardProps = {
   row: number;
   col: number;
   orientation: 'horizontal' | 'vertical';
   shipLength: number;
+  grid: GridCell[][];
   GBLength: number;
 };
 
-export function validatePlacement({
-  grid,
+export default function validatePlacementBoard({
   row,
   col,
   orientation,
   shipLength,
+  grid,
   GBLength,
-}: ValidatePlacementProps) {
+}: ValidatePlacementBoardProps) {
   if (orientation == 'horizontal') {
     if (col + shipLength > GBLength) {
       return false;
-    }
-
-    for (let i = 0; i < shipLength; i++) {
-      if (grid[row][col + i] !== null) {
-        return false;
-      }
     }
   }
 
@@ -33,13 +27,20 @@ export function validatePlacement({
     if (row + shipLength > GBLength) {
       return false;
     }
-
-    for (let i = 0; i < shipLength; i++) {
-      if (grid[row + i][col] !== null) {
-        return false;
-      }
-    }
   }
 
+  for (let i = 0; i < shipLength; i++) {
+    let newRow = row;
+    let newCol = col;
+    if (orientation === 'horizontal') {
+      newCol += i;
+    } else {
+      newRow += i;
+    }
+
+    if (grid[newRow][newCol] !== null) {
+      return false;
+    }
+  }
   return true;
 }

@@ -1,5 +1,4 @@
 import { useDroppable } from '@dnd-kit/react';
-import { validatePlacement } from '../game/validatePlacement';
 
 type CellProps = {
   key: string;
@@ -22,11 +21,9 @@ export default function Cell({
   hasShip,
   children,
   boardType,
-  play,
 }: CellProps) {
   const { ref } = useDroppable({
     id: `${boardType}-${row}-${col}`,
-    // disabled: !validatePlacement(board, row, col, orientation),
   });
 
   const handleAttack = () => {
