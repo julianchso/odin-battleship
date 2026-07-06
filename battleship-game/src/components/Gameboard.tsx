@@ -24,7 +24,6 @@ function Gameboard({
   onRotateShip,
 }: GameboardProps) {
   const mode = play && handleAttack ? 'battle' : 'prepare';
-  const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
   return (
     <div className='gameboard_wrapper'>

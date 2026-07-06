@@ -39,7 +39,7 @@ export default function Cell({
       ref={ref}
       data-id={`${boardType}-${row}-${col}`}
     >
-      {row},{col}
+      {/* {row},{col} */}
       {children}
     </div>
   );

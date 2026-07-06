@@ -197,12 +197,6 @@ button {
   width: calc(var(--cell-size) * var(--cell-number));
 }
 
-/* .gameboard_row {
-  display: grid;
-  grid-template-columns: repeat(11, var(--cell-size));
-  grid-template-rows: var(--cell-size);
-} */
-
 .gameboard_row {
   display: contents;
 }
@@ -240,6 +234,36 @@ button {
   border-radius: 10px;
 }
 
+.ship_panel {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.ship-panel .draggable_ships {
+  position: relative;
+}
+
+.gameboard_ships-layer .draggable_ships {
+  position: absolute;
+  pointer-events: auto;
+}
+
+.unplaced {
+  position: relative;
+}
+
+.placed {
+  position: absolute;
+}
+
+.dnd_draggable_ship {
+  height: var(--cell-size);
+  width: var(--cell-size);
+  background-color: green;
+  border: none;
+}
+
 .draggable_ships.horizontal {
   display: flex;
   flex-direction: row;
@@ -248,18 +272,6 @@ button {
 .draggable_ships.vertical {
   display: flex;
   flex-direction: column;
-}
-
-.ship_panel {
-  display: flex;
-  flex-direction: column;
-}
-
-.dnd_draggable_ship {
-  height: var(--cell-size);
-  width: var(--cell-size);
-  background-color: green;
-  border: none;
 }
 
 .dnd_droppable_cell {

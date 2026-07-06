@@ -30,18 +30,23 @@ export default function DraggableShip({
     getComputedStyle(document.documentElement).getPropertyValue('--cell-size'),
   );
 
+  const isPlaced = typeof row === 'number' && typeof col === 'number';
+
   return (
     <div
       ref={ref}
-      className={`draggable_ships ${orientation === 'horizontal' ? 'horizontal' : 'vertical'}`}
-      onClick={() => onRotate(id)}
-      style={{
-        position: 'absolute',
-        left: col! * cellSize,
-        top: row! * cellSize,
-        width: orientation === 'horizontal' ? length * cellSize : cellSize,
-        height: orientation === 'vertical' ? length * cellSize : cellSize,
-      }}
+      className={`draggable_ships  ${isPlaced ? 'placed' : 'unplaced'} ${orientation === 'horizontal' ? 'horizontal' : 'vertical'}`}
+      onClick={() => isPlaced && onRotate(id)}
+      style={
+        isPlaced
+          ? {
+              left: col * cellSize,
+              top: row * cellSize,
+              width: orientation === 'horizontal' ? length * cellSize : cellSize,
+              height: orientation === 'vertical' ? length * cellSize : cellSize,
+            }
+          : {}
+      }
     >
       {[...Array(length)].map((_, i) => (
         <div key={i} className='dnd_draggable_ship'>

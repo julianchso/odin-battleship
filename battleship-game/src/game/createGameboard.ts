@@ -20,19 +20,6 @@ export default function createGameBoard(GBLength: number) {
   ) {
     const ship = createShip(shipLength);
 
-    // if (
-    //   !validatePlacementShips({
-    //     row,
-    //     col,
-    //     orientation,
-    //     shipLength,
-    //     existingShips: shipList,
-    //     GBLength,
-    //   })
-    // ) {
-    //   return false;
-    // }
-
     if (
       !validatePlacementBoard({
         row,
@@ -92,7 +79,7 @@ export default function createGameBoard(GBLength: number) {
   }
 
   function hasBeenAttacked(row: number, col: number) {
-    const key = `${row}, ${col}`;
+    const key = `${row},${col}`;
 
     return attacksSquare.has(key);
   }

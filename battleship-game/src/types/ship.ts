@@ -7,3 +7,10 @@ export type ShipState = {
   col: number | null;
   orientation: 'horizontal' | 'vertical';
 };
+
+export type AiState = {
+  mode: 'hunting' | 'target';
+  targetRow: number | null;
+  targetCol: number | null;
+  direction: 'up' | 'down' | 'left' | 'right' | null;
+};

@@ -4,14 +4,14 @@ import { DragDropProvider } from '@dnd-kit/react';
 
 import createGameBoard from './game/createGameboard';
 import { Gameboard } from './components/Gameboard';
-import { attack, getComputerMoves } from './game/playerActions';
+import { getComputerMoves } from './game/playerActions';
 import { placeRandomShips } from './game/placeRandomShips';
 import { validatePlacementShips } from './game/validatePlacementShips';
 import { generateRandomShips } from './game/generateRandomShips';
 import ShipPanel from './components/ShipPanel';
 import ShipLayer from './components/ShipLayer';
 
-import type { ShipId, ShipState } from './types/ship';
+import { type AiState, type ShipId, type ShipState } from './types/ship';
 
 import './App.css';
 
@@ -22,6 +22,12 @@ function App() {
   const [turn, setTurn] = useState<'player' | 'computer'>('player');
   const [winner, setWinner] = useState<'player' | 'computer' | null>(null);
   const [target, setTarget] = useState();
+  const [computerAI, setComputerAI] = useState<AiState>({
+    mode: 'hunting',
+    targetRow: null,
+    targetCol: null,
+    direction: null,
+  });
 
   const initialShips: ShipState[] = [
     { id: 'carrier', length: 5, row: null, col: null, orientation: 'horizontal' },
@@ -53,8 +59,13 @@ function App() {
       return;
     }
 
-    const gameOver = attack(row, col, computerBoard);
+    const result = computerBoard.receiveAttack(row, col);
 
+    if (result === undefined) {
+      return;
+    }
+
+    const gameOver = computerBoard.allShipsSunk();
     if (gameOver) {
       setWinner('player');
       setPlay(false);
@@ -64,9 +75,26 @@ function App() {
     setTurn('computer');
   }
 
+  useEffect(() => {
+    console.log(computerAI.mode);
+    console.log(computerAI.direction);
+  });
+
   function handleComputerAttack() {
-    const { row, col } = getComputerMoves(playerBoard);
-    const gameOver = attack(row, col, playerBoard);
+    const { row, col } = getComputerMoves(playerBoard, computerAI);
+
+    if (row === undefined || col === undefined) return;
+
+    const result = playerBoard.receiveAttack(row, col);
+
+    setComputerAI((prev) => ({
+      ...prev,
+      mode: result === 'hit' ? 'target' : 'hunting',
+      targetRow: row,
+      targetCol: col,
+    }));
+
+    const gameOver = playerBoard.allShipsSunk();
 
     if (gameOver) {
       setWinner('computer');
