@@ -27,6 +27,7 @@ function App() {
     targetRow: null,
     targetCol: null,
     direction: null,
+    triedDirection: [],
   });
 
   const initialShips: ShipState[] = [
@@ -81,7 +82,7 @@ function App() {
   });
 
   function handleComputerAttack() {
-    const { row, col } = getComputerMoves(playerBoard, computerAI);
+    const { row, col, direction } = getComputerMoves(playerBoard, computerAI);
 
     if (row === undefined || col === undefined) return;
 
@@ -89,9 +90,14 @@ function App() {
 
     setComputerAI((prev) => ({
       ...prev,
-      mode: result === 'hit' ? 'target' : 'hunting',
+      mode: result === 'hit' ? 'target' : prev.mode,
       targetRow: row,
       targetCol: col,
+      direction: direction ?? null,
+      triedDirection:
+        direction && !prev.triedDirection.includes(direction) && result !== 'hit'
+          ? [...prev.triedDirection, direction]
+          : prev.triedDirection,
     }));
 
     const gameOver = playerBoard.allShipsSunk();

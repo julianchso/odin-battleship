@@ -1,9 +1,10 @@
 import type { Gameboard } from '../components/Gameboard';
-import type { AiState } from '../types/ship';
+import type { AiState, Direction } from '../types/ship';
 
 type ComputerMove = {
   row: number;
   col: number;
+  direction?: Direction | null;
 };
 
 function getComputerRandAtk(board: Gameboard): ComputerMove {
@@ -15,7 +16,7 @@ function getComputerRandAtk(board: Gameboard): ComputerMove {
     col = Math.floor(Math.random() * 10);
   }
 
-  return { row, col };
+  return { row, col, direction: null };
 }
 
 function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
@@ -25,6 +26,7 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
 
   let newRow = ai.targetRow;
   let newCol = ai.targetCol;
+  let direction = ai.direction;
 
   const randomDir = Math.random();
 
@@ -32,15 +34,19 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
     if (randomDir < 0.25) {
       // up
       newRow -= 1;
+      direction = 'up';
     } else if (randomDir < 0.5) {
       // down
       newRow += 1;
+      direction = 'down';
     } else if (randomDir < 0.75) {
       // right
       newCol += 1;
+      direction = 'right';
     } else {
       // left
       newCol -= 1;
+      direction = 'left';
     }
   }
 
@@ -57,11 +63,12 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
   return {
     row: newRow,
     col: newCol,
+    direction: direction,
   };
 }
 
 function getComputerMoves(board: Gameboard, ai: AiState) {
-  if (!ai.hit) {
+  if (ai.mode === 'hunting') {
     return getComputerRandAtk(board);
   }
 

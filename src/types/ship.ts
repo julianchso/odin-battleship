@@ -8,9 +8,12 @@ export type ShipState = {
   orientation: 'horizontal' | 'vertical';
 };
 
+export type Direction = 'up' | 'down' | 'left' | 'right';
+
 export type AiState = {
   mode: 'hunting' | 'target';
   targetRow: number | null;
   targetCol: number | null;
-  direction: 'up' | 'down' | 'left' | 'right' | null;
+  direction: Direction | null;
+  triedDirection: Direction[];
 };
