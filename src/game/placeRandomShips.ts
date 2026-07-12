@@ -1,7 +1,8 @@
 import type { Gameboard } from '../components/Gameboard';
+import type { ShipState } from '../types/ship';
 import validatePlacementBoard from './validatePlacementBoard';
 
-export function placeRandomShips(board: Gameboard, length: number) {
+export function placeRandomShips(board: Gameboard, ship: ShipState) {
   let placed: boolean | undefined = false;
 
   while (!placed) {
@@ -14,13 +15,13 @@ export function placeRandomShips(board: Gameboard, length: number) {
       row: randomRowIndex,
       col: randomColIndex,
       orientation,
-      shipLength: length,
+      shipLength: ship.length,
       grid: board.grid,
       GBLength: board.grid.length,
     });
 
     if (valid) {
-      placed = board.placeShip(randomRowIndex, randomColIndex, length, orientation);
+      placed = board.placeShip(randomRowIndex, randomColIndex, ship.length, orientation, ship.id);
     }
   }
 }

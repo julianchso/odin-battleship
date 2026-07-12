@@ -1,7 +1,11 @@
-export function createShip(length: number) {
+import type { ShipId } from '../types/ship';
+
+export function createShip(length: number, id: ShipId) {
   let hits = 0;
 
   return {
+    id,
+
     length,
 
     hit() {

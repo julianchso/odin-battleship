@@ -30,10 +30,6 @@ function Gameboard({
       <div className='gameboard_grid'>
         {gameboard.grid.map((row, rowIndex) => (
           <>
-            {/* <div className='gameboard_row-label' key={`row-${rowIndex}`}>
-              {rowIndex + 1}
-            </div> */}
-
             {row.map((cell, colIndex) => (
               <Cell
                 key={`${rowIndex}-${colIndex}`}

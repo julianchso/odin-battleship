@@ -30,34 +30,54 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
 
   const randomDir = Math.random();
 
+  if (ai.direction === 'up') {
+    while (newRow > 0 && board.isHit(newRow - 1, newCol)) {
+      newRow -= 1;
+    }
+    console.log('direction up');
+    newRow -= 1;
+  } else if (ai.direction === 'down') {
+    while (newRow < board.grid.length && board.isHit(newRow + 1, newCol)) {
+      newRow += 1;
+    }
+    console.log('direction down');
+    newRow += 1;
+  } else if (ai.direction === 'right') {
+    while (newCol < board.grid.length && board.isHit(newRow, newCol + 1)) {
+      newCol += 1;
+    }
+    console.log('direction right');
+    newCol += 1;
+  } else if (ai.direction === 'left') {
+    while (newCol > 0 && board.isHit(newRow, newCol - 1)) {
+      newCol -= 1;
+    }
+    console.log('direction left');
+    newCol -= 1;
+  }
+
   if (ai.direction === null) {
     if (randomDir < 0.25) {
       // up
       newRow -= 1;
       direction = 'up';
+      console.log('direction null up');
     } else if (randomDir < 0.5) {
       // down
       newRow += 1;
       direction = 'down';
+      console.log('direction null down');
     } else if (randomDir < 0.75) {
       // right
       newCol += 1;
       direction = 'right';
+      console.log('direction null right');
     } else {
       // left
       newCol -= 1;
       direction = 'left';
+      console.log('direction null left');
     }
-  }
-
-  if (ai.direction === 'up') {
-    newRow -= 1;
-  } else if (ai.direction === 'down') {
-    newRow += 1;
-  } else if (ai.direction === 'right') {
-    newCol += 1;
-  } else if (ai.direction === 'left') {
-    newCol -= 1;
   }
 
   return {

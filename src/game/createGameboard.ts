@@ -1,7 +1,7 @@
 import { createShip } from './createShip';
-import { validatePlacementShips } from './validatePlacementShips';
 import validatePlacementBoard from './validatePlacementBoard';
 import type { Ship } from './createShip';
+import type { ShipId } from '../types/ship';
 
 export type GridCell = Ship | null;
 
@@ -17,8 +17,9 @@ export default function createGameBoard(GBLength: number) {
     col: number,
     shipLength: number,
     orientation: 'horizontal' | 'vertical',
+    id: ShipId,
   ) {
-    const ship = createShip(shipLength);
+    const ship = createShip(shipLength, id);
 
     if (
       !validatePlacementBoard({

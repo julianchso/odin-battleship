@@ -14,6 +14,15 @@ import ShipLayer from './components/ShipLayer';
 import { type AiState, type ShipId, type ShipState } from './types/ship';
 
 import './App.css';
+import getOppositeDirection from './game/getOppositeDirection';
+
+const shipDefinitions: ShipState[] = [
+  { id: 'carrier', length: 5, row: null, col: null, orientation: 'horizontal' },
+  { id: 'battleship', length: 4, row: null, col: null, orientation: 'horizontal' },
+  { id: 'destroyer', length: 3, row: null, col: null, orientation: 'horizontal' },
+  { id: 'submarine', length: 3, row: null, col: null, orientation: 'horizontal' },
+  { id: 'patrol-boat', length: 2, row: null, col: null, orientation: 'horizontal' },
+];
 
 function App() {
   const [play, setPlay] = useState(false);
@@ -30,14 +39,7 @@ function App() {
     triedDirection: [],
   });
 
-  const initialShips: ShipState[] = [
-    { id: 'carrier', length: 5, row: null, col: null, orientation: 'horizontal' },
-    { id: 'battleship', length: 4, row: null, col: null, orientation: 'horizontal' },
-    { id: 'destroyer', length: 3, row: null, col: null, orientation: 'horizontal' },
-    { id: 'submarine', length: 3, row: null, col: null, orientation: 'horizontal' },
-    { id: 'patrol-boat', length: 2, row: null, col: null, orientation: 'horizontal' },
-  ];
-  const [ships, setShips] = useState<ShipState[]>(initialShips);
+  const [ships, setShips] = useState<ShipState[]>(shipDefinitions);
 
   function createPlayerBoard() {
     const board = createGameBoard(10);
@@ -46,10 +48,9 @@ function App() {
 
   function createComputerBoard() {
     const board = createGameBoard(10);
-    const shipLengths = [5, 4, 3, 3, 2];
 
-    shipLengths.map((length) => {
-      placeRandomShips(board, length);
+    shipDefinitions.forEach((ship) => {
+      placeRandomShips(board, ship);
     });
 
     return board;
@@ -77,8 +78,8 @@ function App() {
   }
 
   useEffect(() => {
-    console.log(computerAI.mode);
-    console.log(computerAI.direction);
+    // console.log(computerAI.mode);
+    // console.log(computerAI.direction);
   });
 
   function handleComputerAttack() {
@@ -93,7 +94,10 @@ function App() {
       mode: result === 'hit' ? 'target' : prev.mode,
       targetRow: row,
       targetCol: col,
-      direction: direction ?? null,
+      direction:
+        result === 'miss' && prev.direction
+          ? getOppositeDirection(prev.direction)
+          : (direction ?? null),
       triedDirection:
         direction && !prev.triedDirection.includes(direction) && result !== 'hit'
           ? [...prev.triedDirection, direction]
@@ -135,7 +139,6 @@ function App() {
         }
 
         const valid = validatePlacementShips({
-          // grid: playerBoard.grid,
           row: ship.row,
           col: ship.col,
           orientation: newOrientation,
@@ -168,7 +171,7 @@ function App() {
 
     setWinner(null);
     setTurn('player');
-    setShips(initialShips);
+    setShips(shipDefinitions);
     setPlayerBoard(newPlayerBoard);
     setComputerBoard(newComputerBoard);
   }
@@ -181,14 +184,13 @@ function App() {
         return;
       }
 
-      newPlayerBoard.placeShip(ship.row, ship.col, ship.length, ship.orientation);
+      newPlayerBoard.placeShip(ship.row, ship.col, ship.length, ship.orientation, ship.id);
     });
     setPlayerBoard(newPlayerBoard);
     setComputerBoard(newComputerBoard);
 
     setPlay(true);
-    // test
-    setShips(initialShips);
+    setShips(shipDefinitions);
   }
 
   function handleRandomizeShips() {
