@@ -5,8 +5,7 @@ import { isInBounds } from './isInBounds';
 type ComputerMove = {
   row: number;
   col: number;
-  direction?: Direction | null;
-  triedDirection?: Direction[] | null;
+  attemptedDirection: Direction | null;
 };
 
 function getComputerRandAtk(board: Gameboard): ComputerMove {
@@ -18,7 +17,7 @@ function getComputerRandAtk(board: Gameboard): ComputerMove {
     col = Math.floor(Math.random() * 10);
   }
 
-  return { row, col, direction: null };
+  return { row, col, attemptedDirection: null };
 }
 
 function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
@@ -28,102 +27,91 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
 
   let newRow = ai.targetRow;
   let newCol = ai.targetCol;
-  let direction = ai.direction;
-  let triedDirection = ai.triedDirection;
+  let targetDirection = ai.targetDirection;
+  let attemptedDirection: Direction | null = null;
 
   console.log('START:', {
     targetRow: ai.targetRow,
     targetCol: ai.targetCol,
-    direction: ai.direction,
+    targetDirection: ai.targetDirection,
   });
 
-  const randomDir = Math.random();
-
-  if (direction === 'up') {
+  if (targetDirection === 'up') {
     while (newRow >= 0 && board.isHit(newRow, newCol)) {
       newRow -= 1;
       console.log('while up');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       console.log('up is exhausted');
-      direction = 'down';
+      targetDirection = 'down';
     }
-  } else if (direction === 'down') {
+  } else if (targetDirection === 'down') {
     while (newRow <= board.grid.length - 1 && board.isHit(newRow, newCol)) {
       newRow += 1;
       console.log('while down');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       console.log('down is exhausted');
-      direction = 'up';
+      targetDirection = 'up';
     }
-  } else if (direction === 'right') {
+  } else if (targetDirection === 'right') {
     while (newCol <= board.grid.length - 1 && board.isHit(newRow, newCol)) {
       newCol += 1;
       console.log('while right');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       console.log('right is exhausted');
-      direction = 'left';
+      targetDirection = 'left';
     }
-  } else if (direction === 'left') {
+  } else if (targetDirection === 'left') {
     while (newCol >= 0 && board.isHit(newRow, newCol)) {
       newCol -= 1;
       console.log('while left');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       console.log('left is exhausted');
-      direction = 'right';
+      targetDirection = 'right';
     }
   }
 
-  if (direction === null) {
+  if (targetDirection === null) {
     const directions: Direction[] = ['up', 'down', 'left', 'right'];
+
+    console.log('ALL:', directions);
+    console.log('TRIED:', ai.triedDirection);
     const availableDirections = directions.filter(
       (direction) => !ai.triedDirection.includes(direction),
     );
 
-    const attemptedDirection =
+    console.log('AVAILABLE:', availableDirections);
+
+    attemptedDirection =
       availableDirections[Math.floor(Math.random() * availableDirections.length)];
 
     if (attemptedDirection === 'up') {
       newRow -= 1;
-      if (board.isHit(newRow, newCol)) {
-        direction = 'up';
-      }
     } else if (attemptedDirection === 'down') {
       // down
       newRow += 1;
-      if (board.isHit(newRow, newCol)) {
-        direction = 'down';
-      }
     } else if (attemptedDirection === 'right') {
       // right
       newCol += 1;
-      if (board.isHit(newRow, newCol)) {
-        direction = 'right';
-      }
     } else if (attemptedDirection === 'left') {
       // left
       newCol -= 1;
-      if (board.isHit(newRow, newCol)) {
-        direction = 'left';
-      }
     }
   }
 
   console.log('RETURN:', {
     row: newRow,
     col: newCol,
-    direction,
-    triedDirection,
+    attemptedDirection,
   });
 
   return {
     row: newRow,
     col: newCol,
-    direction: direction,
-    triedDirection: triedDirection,
+    attemptedDirection,
   };
 }
 

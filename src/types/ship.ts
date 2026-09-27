@@ -14,6 +14,6 @@ export type AiState = {
   mode: 'hunting' | 'target';
   targetRow: number | null;
   targetCol: number | null;
-  direction: Direction | null;
+  targetDirection: Direction | null;
   triedDirection: Direction[];
 };

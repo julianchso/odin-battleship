@@ -14,7 +14,6 @@ import ShipLayer from './components/ShipLayer';
 import { type AiState, type ShipId, type ShipState } from './types/ship';
 
 import './App.css';
-import getOppositeDirection from './game/getOppositeDirection';
 
 const shipDefinitions: ShipState[] = [
   { id: 'carrier', length: 5, row: null, col: null, orientation: 'horizontal' },
@@ -35,7 +34,7 @@ function App() {
     mode: 'hunting',
     targetRow: null,
     targetCol: null,
-    direction: null,
+    targetDirection: null,
     triedDirection: [],
   });
 
@@ -83,24 +82,39 @@ function App() {
   });
 
   function handleComputerAttack() {
-    const { row, col, direction } = getComputerMoves(playerBoard, computerAI);
+    const { row, col, attemptedDirection } = getComputerMoves(playerBoard, computerAI);
+
+    console.log('ATTEMPTED DIRECTION:', attemptedDirection);
 
     if (row === undefined || col === undefined) return;
 
     const result = playerBoard.receiveAttack(row, col);
+
+    console.log('BEFORE UPDATE:', {
+      result,
+      attemptedDirection,
+      mode: computerAI.mode,
+      targetDirection: computerAI.targetDirection,
+      triedDirection: computerAI.triedDirection,
+    });
 
     setComputerAI((prev) => ({
       ...prev,
       mode: result === 'hit' ? 'target' : prev.mode,
       targetRow: prev.mode === 'hunting' && result === 'hit' ? row : prev.targetRow,
       targetCol: prev.mode === 'hunting' && result === 'hit' ? col : prev.targetCol,
-      direction:
-        result === 'miss' && prev.direction
-          ? getOppositeDirection(prev.direction)
-          : (direction ?? null),
+      targetDirection:
+        prev.mode === 'target' && prev.targetDirection === null && result === 'hit'
+          ? attemptedDirection
+          : prev.targetDirection,
+
       triedDirection:
-        direction && !prev.triedDirection.includes(direction) && result !== 'hit'
-          ? [...prev.triedDirection, direction]
+        prev.mode === 'target' &&
+        prev.targetDirection === null &&
+        result === 'miss' &&
+        attemptedDirection &&
+        !prev.triedDirection.includes(attemptedDirection)
+          ? [...prev.triedDirection, attemptedDirection]
           : prev.triedDirection,
     }));
 
@@ -252,6 +266,10 @@ function App() {
   //   console.log(playerBoard.shipList.length);
   //   console.log(ships.length);
   // });
+
+  useEffect(() => {
+    console.log('COMPUTER AI CHANGED:', computerAI);
+  }, [computerAI]);
 
   return (
     <>
