@@ -78,12 +78,14 @@ function App() {
   }
 
   useEffect(() => {
-    // console.log(computerAI.mode);
+    console.log(computerAI.mode);
     // console.log(computerAI.direction);
   });
 
   function handleComputerAttack() {
     const { row, col, direction } = getComputerMoves(playerBoard, computerAI);
+
+    console.log(`Comp row ${row}, Comp col ${col}`);
 
     if (row === undefined || col === undefined) return;
 

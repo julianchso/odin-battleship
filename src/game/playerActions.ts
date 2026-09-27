@@ -1,5 +1,6 @@
 import type { Gameboard } from '../components/Gameboard';
 import type { AiState, Direction } from '../types/ship';
+import { isInBounds } from './isInBounds';
 
 type ComputerMove = {
   row: number;
@@ -34,26 +35,50 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
     while (newRow > 0 && board.isHit(newRow - 1, newCol)) {
       newRow -= 1;
     }
+
     console.log('direction up');
     newRow -= 1;
+
+    if (!isInBounds(board, newRow, newCol)) {
+      newRow = ai.targetRow + 1;
+      ai.direction = 'down';
+    }
   } else if (ai.direction === 'down') {
-    while (newRow < board.grid.length && board.isHit(newRow + 1, newCol)) {
+    while (newRow < board.grid.length - 1 && board.isHit(newRow + 1, newCol)) {
       newRow += 1;
     }
+
     console.log('direction down');
     newRow += 1;
+
+    if (!isInBounds(board, newRow, newCol)) {
+      newRow = ai.targetRow - 1;
+      ai.direction = 'up';
+    }
   } else if (ai.direction === 'right') {
-    while (newCol < board.grid.length && board.isHit(newRow, newCol + 1)) {
+    while (newCol < board.grid.length - 1 && board.isHit(newRow, newCol + 1)) {
       newCol += 1;
     }
+
     console.log('direction right');
     newCol += 1;
+
+    if (!isInBounds(board, newRow, newCol)) {
+      newCol = ai.targetCol - 1;
+      ai.direction = 'left';
+    }
   } else if (ai.direction === 'left') {
     while (newCol > 0 && board.isHit(newRow, newCol - 1)) {
       newCol -= 1;
     }
+
     console.log('direction left');
     newCol -= 1;
+
+    if (!isInBounds(board, newRow, newCol)) {
+      newCol = ai.targetCol + 1;
+      ai.direction = 'right';
+    }
   }
 
   if (ai.direction === null) {

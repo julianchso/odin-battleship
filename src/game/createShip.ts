@@ -5,11 +5,14 @@ export function createShip(length: number, id: ShipId) {
 
   return {
     id,
-
     length,
 
     hit() {
       hits++;
+    },
+
+    getHits() {
+      return hits;
     },
 
     isSunk() {
