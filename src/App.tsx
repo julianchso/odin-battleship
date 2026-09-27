@@ -78,14 +78,12 @@ function App() {
   }
 
   useEffect(() => {
-    console.log(computerAI.mode);
+    // console.log(computerAI.mode);
     // console.log(computerAI.direction);
   });
 
   function handleComputerAttack() {
     const { row, col, direction } = getComputerMoves(playerBoard, computerAI);
-
-    console.log(`Comp row ${row}, Comp col ${col}`);
 
     if (row === undefined || col === undefined) return;
 
@@ -94,8 +92,8 @@ function App() {
     setComputerAI((prev) => ({
       ...prev,
       mode: result === 'hit' ? 'target' : prev.mode,
-      targetRow: row,
-      targetCol: col,
+      targetRow: prev.mode === 'hunting' && result === 'hit' ? row : prev.targetRow,
+      targetCol: prev.mode === 'hunting' && result === 'hit' ? col : prev.targetCol,
       direction:
         result === 'miss' && prev.direction
           ? getOppositeDirection(prev.direction)
