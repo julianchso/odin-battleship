@@ -68,10 +68,10 @@ export default function createGameBoard(GBLength: number) {
     if (cell !== null) {
       cell.hit();
       attacksHit.add(`${row},${col}`);
-      return 'hit';
+      return { result: 'hit', sunk: cell.isSunk() };
     } else {
       attacksMissed.add(`${row},${col}`);
-      return 'miss';
+      return { result: 'miss', sunk: false };
     }
   }
 

@@ -29,6 +29,7 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
   let newCol = ai.targetCol;
   let targetDirection = ai.targetDirection;
   let attemptedDirection: Direction | null = null;
+  let mode;
 
   console.log('START:', {
     targetRow: ai.targetRow,
@@ -44,6 +45,7 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
     if (board.hasBeenAttacked(newRow, newCol)) {
       console.log('up is exhausted');
       targetDirection = 'down';
+      newRow = ai.targetRow + 1;
     }
   } else if (targetDirection === 'down') {
     while (newRow <= board.grid.length - 1 && board.isHit(newRow, newCol)) {
@@ -53,6 +55,7 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
     if (board.hasBeenAttacked(newRow, newCol)) {
       console.log('down is exhausted');
       targetDirection = 'up';
+      newRow = ai.targetRow - 1;
     }
   } else if (targetDirection === 'right') {
     while (newCol <= board.grid.length - 1 && board.isHit(newRow, newCol)) {
@@ -62,6 +65,7 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
     if (board.hasBeenAttacked(newRow, newCol)) {
       console.log('right is exhausted');
       targetDirection = 'left';
+      newCol = ai.targetCol - 1;
     }
   } else if (targetDirection === 'left') {
     while (newCol >= 0 && board.isHit(newRow, newCol)) {
@@ -71,6 +75,7 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
     if (board.hasBeenAttacked(newRow, newCol)) {
       console.log('left is exhausted');
       targetDirection = 'right';
+      newCol = ai.targetCol + 1;
     }
   }
 
@@ -100,6 +105,13 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
       // left
       newCol -= 1;
     }
+  }
+
+  if (!isInBounds(board, newRow, newCol)) {
+    console.log('out of bounds!');
+    console.log(`row: ${newRow}`);
+    console.log(`col: ${newCol}`);
+    return { row: -1, col: -1, attemptedDirection: null };
   }
 
   console.log('RETURN:', {

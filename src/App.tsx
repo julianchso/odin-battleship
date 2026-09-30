@@ -63,6 +63,7 @@ function App() {
     const result = computerBoard.receiveAttack(row, col);
 
     if (result === undefined) {
+      console.log(result);
       return;
     }
 
@@ -76,31 +77,22 @@ function App() {
     setTurn('computer');
   }
 
-  useEffect(() => {
-    // console.log(computerAI.mode);
-    // console.log(computerAI.direction);
-  });
-
   function handleComputerAttack() {
     const { row, col, attemptedDirection } = getComputerMoves(playerBoard, computerAI);
 
-    console.log('ATTEMPTED DIRECTION:', attemptedDirection);
-
     if (row === undefined || col === undefined) return;
 
-    const result = playerBoard.receiveAttack(row, col);
+    const attack = playerBoard.receiveAttack(row, col);
 
-    console.log('BEFORE UPDATE:', {
-      result,
-      attemptedDirection,
-      mode: computerAI.mode,
-      targetDirection: computerAI.targetDirection,
-      triedDirection: computerAI.triedDirection,
-    });
+    if (attack === undefined) {
+      return;
+    }
+
+    const { result, sunk } = attack;
 
     setComputerAI((prev) => ({
       ...prev,
-      mode: result === 'hit' ? 'target' : prev.mode,
+      mode: sunk ? 'hunting' : result === 'hit' ? 'target' : prev.mode,
       targetRow: prev.mode === 'hunting' && result === 'hit' ? row : prev.targetRow,
       targetCol: prev.mode === 'hunting' && result === 'hit' ? col : prev.targetCol,
       targetDirection:
@@ -258,18 +250,6 @@ function App() {
 
     setTarget(event.operation.target?.id);
   }
-
-  // useEffect(() => {
-  //   console.log(playerBoard.shipList);
-  //   console.log(ships);
-  //   console.log(`computer: ${computerBoard.shipList}`);
-  //   console.log(playerBoard.shipList.length);
-  //   console.log(ships.length);
-  // });
-
-  useEffect(() => {
-    console.log('COMPUTER AI CHANGED:', computerAI);
-  }, [computerAI]);
 
   return (
     <>
