@@ -40,40 +40,32 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
   if (targetDirection === 'up') {
     while (newRow >= 0 && board.isHit(newRow, newCol)) {
       newRow -= 1;
-      console.log('while up');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
-      console.log('up is exhausted');
       targetDirection = 'down';
       newRow = ai.targetRow + 1;
     }
   } else if (targetDirection === 'down') {
     while (newRow <= board.grid.length - 1 && board.isHit(newRow, newCol)) {
       newRow += 1;
-      console.log('while down');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
-      console.log('down is exhausted');
       targetDirection = 'up';
       newRow = ai.targetRow - 1;
     }
   } else if (targetDirection === 'right') {
     while (newCol <= board.grid.length - 1 && board.isHit(newRow, newCol)) {
       newCol += 1;
-      console.log('while right');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
-      console.log('right is exhausted');
       targetDirection = 'left';
       newCol = ai.targetCol - 1;
     }
   } else if (targetDirection === 'left') {
     while (newCol >= 0 && board.isHit(newRow, newCol)) {
       newCol -= 1;
-      console.log('while left');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
-      console.log('left is exhausted');
       targetDirection = 'right';
       newCol = ai.targetCol + 1;
     }
@@ -82,13 +74,26 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
   if (targetDirection === null) {
     const directions: Direction[] = ['up', 'down', 'left', 'right'];
 
-    console.log('ALL:', directions);
-    console.log('TRIED:', ai.triedDirection);
-    const availableDirections = directions.filter(
-      (direction) => !ai.triedDirection.includes(direction),
-    );
+    const availableDirections = directions.filter((direction) => {
+      if (ai.triedDirection.includes(direction)) return false;
 
-    console.log('AVAILABLE:', availableDirections);
+      let row = ai.targetRow;
+      let col = ai.targetCol;
+
+      if (row === null || col === null) return;
+
+      if (direction === 'up') {
+        row -= 1;
+      } else if (direction === 'down') {
+        row += 1;
+      } else if (direction === 'left') {
+        col -= 1;
+      } else if (direction === 'right') {
+        col += 1;
+      }
+
+      return isInBounds(board, row, col);
+    });
 
     attemptedDirection =
       availableDirections[Math.floor(Math.random() * availableDirections.length)];
@@ -106,19 +111,6 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
       newCol -= 1;
     }
   }
-
-  if (!isInBounds(board, newRow, newCol)) {
-    console.log('out of bounds!');
-    console.log(`row: ${newRow}`);
-    console.log(`col: ${newCol}`);
-    return { row: -1, col: -1, attemptedDirection: null };
-  }
-
-  console.log('RETURN:', {
-    row: newRow,
-    col: newCol,
-    attemptedDirection,
-  });
 
   return {
     row: newRow,

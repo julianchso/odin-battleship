@@ -63,7 +63,6 @@ function App() {
     const result = computerBoard.receiveAttack(row, col);
 
     if (result === undefined) {
-      console.log(result);
       return;
     }
 
