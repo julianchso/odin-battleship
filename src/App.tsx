@@ -93,19 +93,21 @@ function App() {
     setComputerAI((prev) => ({
       ...prev,
       mode: sunk ? 'hunting' : result === 'hit' ? 'target' : prev.mode,
-      targetRow: prev.mode === 'hunting' && result === 'hit' ? row : prev.targetRow,
-      targetCol: prev.mode === 'hunting' && result === 'hit' ? col : prev.targetCol,
-      targetDirection:
-        prev.mode === 'target' && prev.targetDirection === null && result === 'hit'
+      targetRow: sunk ? null : prev.mode === 'hunting' && result === 'hit' ? row : prev.targetRow,
+      targetCol: sunk ? null : prev.mode === 'hunting' && result === 'hit' ? col : prev.targetCol,
+      targetDirection: sunk
+        ? null
+        : prev.mode === 'target' && prev.targetDirection === null && result === 'hit'
           ? attemptedDirection
           : prev.targetDirection,
 
-      triedDirection:
-        prev.mode === 'target' &&
-        prev.targetDirection === null &&
-        result === 'miss' &&
-        attemptedDirection &&
-        !prev.triedDirection.includes(attemptedDirection)
+      triedDirection: sunk
+        ? []
+        : prev.mode === 'target' &&
+            prev.targetDirection === null &&
+            result === 'miss' &&
+            attemptedDirection &&
+            !prev.triedDirection.includes(attemptedDirection)
           ? [...prev.triedDirection, attemptedDirection]
           : prev.triedDirection,
     }));
