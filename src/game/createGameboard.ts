@@ -5,9 +5,16 @@ import type { ShipId } from '../types/ship';
 
 export type GridCell = Ship | null;
 
+type PlacedShip = {
+  ship: Ship;
+  row: number;
+  col: number;
+  orientation: 'horizontal' | 'vertical';
+};
+
 export default function createGameBoard(GBLength: number) {
   const grid: GridCell[][] = Array.from({ length: GBLength }, () => Array(GBLength).fill(null));
-  const shipList: Ship[] = [];
+  const shipList: PlacedShip[] = [];
   const attacksMissed = new Set<string>();
   const attacksHit = new Set<string>();
   const attacksSquare = new Set<string>();
@@ -81,7 +88,7 @@ export default function createGameBoard(GBLength: number) {
   }
 
   function allShipsSunk() {
-    return shipList.every((ship) => ship.isSunk());
+    return shipList.every((placeShip) => placeShip.ship.isSunk());
   }
 
   function hasBeenAttacked(row: number, col: number) {

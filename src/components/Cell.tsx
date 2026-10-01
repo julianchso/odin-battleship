@@ -1,4 +1,5 @@
 import { useDroppable } from '@dnd-kit/react';
+import type { ShipId } from '../types/ship';
 
 type CellProps = {
   key: string;
@@ -7,10 +8,14 @@ type CellProps = {
   id: string;
   onAttack?: (row: number, col: number) => void;
   hasShip: boolean;
-  children?: React.ReactNode;
   boardType: 'player' | 'computer';
   play: boolean;
   mode: 'prepare' | 'battle';
+  isHead: boolean;
+  isTail: boolean;
+  orientation?: 'horizontal' | 'vertical';
+  shipId?: ShipId;
+  children?: React.ReactNode;
 };
 
 export default function Cell({
@@ -19,8 +24,12 @@ export default function Cell({
   mode,
   onAttack,
   hasShip,
-  children,
   boardType,
+  isHead,
+  isTail,
+  orientation,
+  shipId,
+  children,
 }: CellProps) {
   const { ref } = useDroppable({
     id: `${boardType}-${row}-${col}`,
@@ -32,12 +41,27 @@ export default function Cell({
     }
   };
 
+  const rippleDurations = {
+    carrier: 3.7,
+    battleship: 3.2,
+    destroyer: 2.5,
+    submarine: 5,
+    'patrol-boat': 2.0,
+  };
+
+  const rippleDuration = shipId ? rippleDurations[shipId] : 3;
+
   return (
     <div
-      className={`gameboard_cell gameboard_cell-${mode} ${hasShip ? 'gameboard_cell-ship' : 'gameboard_cell-water'}`}
+      className={`gameboard_cell gameboard_cell-${mode} ${hasShip ? 'gameboard_cell-ship' : ''} ${isHead ? `ship-head-${orientation}` : ''} ${isTail ? `ship-tail-${orientation}` : ''} ${hasShip ? (orientation == 'horizontal' ? 'ship-horizontal' : 'ship-vertical') : ''}`}
       onClick={handleAttack}
       ref={ref}
       data-id={`${boardType}-${row}-${col}`}
+      style={
+        {
+          '--ripple-duration': `${rippleDuration}s`,
+        } as React.CSSProperties
+      }
     >
       {children}
     </div>

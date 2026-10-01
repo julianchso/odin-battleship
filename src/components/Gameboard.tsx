@@ -30,24 +30,46 @@ function Gameboard({
       <div className='gameboard_grid'>
         {gameboard.grid.map((row, rowIndex) => (
           <>
-            {row.map((cell, colIndex) => (
-              <Cell
-                key={`${rowIndex}-${colIndex}`}
-                row={rowIndex}
-                col={colIndex}
-                id={`${boardType}-${rowIndex}-${colIndex}`}
-                mode={mode}
-                onAttack={handleAttack}
-                hasShip={gameboard.hasShip(rowIndex, colIndex)}
-                boardType={boardType}
-                play={play}
-              >
-                {gameboard.isHit(rowIndex, colIndex) && <div className='gameboard_cell-hit' />}
-                {gameboard.isMiss(rowIndex, colIndex) && (
-                  <div className='gameboard_cell-miss-dot' />
-                )}
-              </Cell>
-            ))}
+            {row.map((cell, colIndex) => {
+              const placedShip = gameboard.shipList.find((placedShip) => placedShip.ship === cell);
+
+              const isHead =
+                placedShip !== undefined &&
+                rowIndex === placedShip.row &&
+                colIndex === placedShip.col;
+
+              const isTail =
+                placedShip !== undefined &&
+                (placedShip.orientation === 'horizontal'
+                  ? rowIndex === placedShip.row &&
+                    colIndex === placedShip.col + placedShip.ship.length - 1
+                  : rowIndex === placedShip.row + placedShip.ship.length - 1 &&
+                    colIndex === placedShip.col);
+
+              return (
+                <Cell
+                  key={`${rowIndex}-${colIndex}`}
+                  row={rowIndex}
+                  col={colIndex}
+                  id={`${boardType}-${rowIndex}-${colIndex}`}
+                  mode={mode}
+                  onAttack={handleAttack}
+                  hasShip={gameboard.hasShip(rowIndex, colIndex)}
+                  boardType={boardType}
+                  play={play}
+                  isHead={isHead}
+                  isTail={isTail}
+                  shipId={placedShip?.ship.id}
+                  orientation={placedShip?.orientation}
+                >
+                  {gameboard.isHit(rowIndex, colIndex) && <div className='gameboard_cell-hit' />}
+
+                  {gameboard.isMiss(rowIndex, colIndex) && (
+                    <div className='gameboard_cell-miss-dot' />
+                  )}
+                </Cell>
+              );
+            })}
           </>
         ))}
         {ships
