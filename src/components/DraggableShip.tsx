@@ -49,9 +49,7 @@ export default function DraggableShip({
       }
     >
       {[...Array(length)].map((_, i) => (
-        <div key={i} className='dnd_draggable_ship'>
-          S
-        </div>
+        <div key={i} className='dnd_draggable_ship'></div>
       ))}
     </div>
   );

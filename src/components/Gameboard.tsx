@@ -42,7 +42,6 @@ function Gameboard({
                 boardType={boardType}
                 play={play}
               >
-                {rowIndex}, {colIndex}
                 {gameboard.isHit(rowIndex, colIndex) && <div className='gameboard_cell-hit' />}
                 {gameboard.isMiss(rowIndex, colIndex) && (
                   <div className='gameboard_cell-miss-dot' />

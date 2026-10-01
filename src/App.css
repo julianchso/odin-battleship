@@ -257,13 +257,6 @@ button {
   position: absolute;
 }
 
-.dnd_draggable_ship {
-  height: var(--cell-size);
-  width: var(--cell-size);
-  background-color: green;
-  border: none;
-}
-
 .draggable_ships.horizontal {
   display: flex;
   flex-direction: row;
@@ -278,6 +271,29 @@ button {
   height: var(--cell-size);
   width: var(--cell-size);
   background-color: yellow;
+}
+
+.dnd_draggable_ship {
+  height: var(--cell-size);
+  width: var(--cell-size);
+  background-color: grey;
+  border: none;
+}
+
+.draggable_ships.horizontal > .dnd_draggable_ship:first-child {
+  border-radius: 50px 0 0 50px;
+}
+
+.draggable_ships.horizontal > .dnd_draggable_ship:last-child {
+  border-radius: 0 50px 50px 0;
+}
+
+.draggable_ships.vertical > .dnd_draggable_ship:first-child {
+  border-radius: 50px 50px 0 0;
+}
+
+.draggable_ships.vertical > .dnd_draggable_ship:last-child {
+  border-radius: 0 0 50px 50px;
 }
 
 .gameboard_row-label {
@@ -301,7 +317,7 @@ button {
 }
 
 .gameboard_cell-ship {
-  background: green;
+  background: grey;
 }
 
 .gameboard_cell-water {

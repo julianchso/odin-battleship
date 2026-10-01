@@ -46,7 +46,12 @@ export default function createGameBoard(GBLength: number) {
       }
     }
 
-    shipList.push(ship);
+    shipList.push({
+      ship,
+      row,
+      col,
+      orientation,
+    });
 
     return true;
   }
