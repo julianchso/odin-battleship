@@ -33,12 +33,12 @@ function Gameboard({
             {row.map((cell, colIndex) => {
               const placedShip = gameboard.shipList.find((placedShip) => placedShip.ship === cell);
 
-              const isHead =
+              const isTail =
                 placedShip !== undefined &&
                 rowIndex === placedShip.row &&
                 colIndex === placedShip.col;
 
-              const isTail =
+              const isHead =
                 placedShip !== undefined &&
                 (placedShip.orientation === 'horizontal'
                   ? rowIndex === placedShip.row &&

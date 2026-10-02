@@ -151,6 +151,19 @@ button {
   --cell-size: 40px;
   --cell-number: 10;
   --cell-water: lightskyblue;
+  --ship-tail-colour: #bf0000;
+  --ship-head-shape: polygon(
+    0% 0%,
+    15% 0%,
+    55% 10%,
+    85% 30%,
+    100% 50%,
+    85% 70%,
+    55% 90%,
+    15% 100%,
+    0% 100%
+  );
+  --ship-tail-shape: polygon(15% 0%, 100% 0%, 100% 100%, 15% 100%, 5% 80%, 0% 50%, 5% 20%);
 }
 
 /* GAMEBOARD */
@@ -247,9 +260,10 @@ button {
   opacity: 0.5;
 }
 
-.gameboard_playBtn {
+.gameboard_btn {
   padding: 10px 20px;
-  font-size: 2em;
+  margin: 20px;
+  font-size: 1.5em;
   border: none;
   border-radius: 10px;
 }
@@ -302,46 +316,222 @@ button {
   border: none;
 }
 
-.draggable_ships.horizontal > .dnd_draggable_ship:first-child {
-  border-radius: 50px 0 0 50px;
-}
-
-.draggable_ships.horizontal > .dnd_draggable_ship:last-child {
-  border-radius: 0 50px 50px 0;
-}
-
-.draggable_ships.vertical > .dnd_draggable_ship:first-child {
-  border-radius: 50px 50px 0 0;
-}
-
-.draggable_ships.vertical > .dnd_draggable_ship:last-child {
-  border-radius: 0 0 50px 50px;
-}
-
-.ship-head-horizontal,
-.ship-head-horizontal::before {
-  border-radius: 50px 0 0 50px;
-}
-
-.ship-tail-horizontal,
-.ship-tail-horizontal::before {
-  border-radius: 0 50px 50px 0;
-}
-
-.ship-head-vertical,
-.ship-head-vertical::before {
-  border-radius: 50px 50px 0 0;
-}
-
-.ship-tail-vertical,
-.ship-tail-vertical::before {
-  border-radius: 0 0 50px 50px;
-}
-
 .ship-vertical,
 .ship-horizontal {
   position: relative;
 }
+
+.gameboard_row-label {
+  align-self: center;
+}
+
+.gameboard_col-label {
+  justify-self: center;
+  margin-bottom: 10px;
+}
+
+.gameboard_cell-ship {
+  background: grey;
+}
+
+/* CARRIER */
+.draggable_ships.horizontal .carrier:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.draggable_ships.horizontal .carrier:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+.draggable_ships.vertical .carrier:first-child {
+  border-radius: 10px 10px 0 0;
+}
+
+.draggable_ships.vertical .carrier:last-child {
+  border-radius: 0 0 10px 10px;
+}
+
+.ship-head-horizontal.carrier,
+.ship-head-horizontal.carrier::before {
+  border-radius: 0 10px 10px 0;
+}
+
+.ship-tail-horizontal.carrier,
+.ship-tail-horizontal.carrier::before {
+  border-radius: 10px 0 0 10px;
+}
+
+.ship-head-vertical.carrier,
+.ship-head-vertical.carrier::before {
+  border-radius: 0 0 10px 10px;
+}
+
+.ship-tail-vertical.carrier,
+.ship-tail-vertical.carrier::before {
+  border-radius: 10px 10px 0 0;
+}
+
+/* BATTLESHIP */
+.draggable_ships.horizontal .battleship:first-child {
+  clip-path: var(--ship-tail-shape);
+}
+
+.draggable_ships.horizontal .battleship:last-child {
+  clip-path: var(--ship-head-shape);
+}
+
+.draggable_ships.vertical .battleship:first-child {
+  clip-path: var(--ship-tail-shape);
+  rotate: 90deg;
+}
+
+.draggable_ships.vertical .battleship:last-child {
+  clip-path: var(--ship-head-shape);
+  rotate: 90deg;
+}
+
+.ship-head-horizontal.battleship,
+.ship-head-horizontal.battleship::before {
+  clip-path: var(--ship-head-shape);
+}
+
+.ship-tail-horizontal.battleship,
+.ship-tail-horizontal.battleship::before {
+  clip-path: var(--ship-tail-shape);
+}
+
+.ship-head-vertical.battleship,
+.ship-head-vertical.battleship::before {
+  clip-path: var(--ship-head-shape);
+  rotate: 90deg;
+}
+
+.ship-tail-vertical.battleship,
+.ship-tail-vertical.battleship::before {
+  clip-path: var(--ship-tail-shape);
+  rotate: 90deg;
+}
+
+/* SUBMARINE */
+.draggable_ships.horizontal .submarine:first-child {
+  border-radius: 40px 0 0 40px;
+}
+
+.draggable_ships.horizontal .submarine:last-child {
+  border-radius: 0 40px 40px 0;
+}
+
+.draggable_ships.vertical .submarine:first-child {
+  border-radius: 40px 40px 0 0;
+}
+
+.draggable_ships.vertical .submarine:last-child {
+  border-radius: 0 0 40px 40px;
+}
+
+.ship-head-horizontal.submarine,
+.ship-head-horizontal.submarine::before {
+  border-radius: 0 40px 40px 0;
+}
+
+.ship-tail-horizontal.submarine,
+.ship-tail-horizontal.submarine::before {
+  border-radius: 40px 0 0 40px;
+}
+
+.ship-head-vertical.submarine,
+.ship-head-vertical.submarine::before {
+  border-radius: 0 0 40px 40px;
+}
+
+.ship-tail-vertical.submarine,
+.ship-tail-vertical.submarine::before {
+  border-radius: 40px 40px 0 0;
+}
+
+/* DESTROYER */
+.draggable_ships.horizontal .destroyer:first-child {
+  clip-path: var(--ship-tail-shape);
+}
+
+.draggable_ships.horizontal .destroyer:last-child {
+  clip-path: var(--ship-head-shape);
+}
+
+.draggable_ships.vertical .destroyer:first-child {
+  clip-path: var(--ship-tail-shape);
+  rotate: 90deg;
+}
+
+.draggable_ships.vertical .destroyer:last-child {
+  clip-path: var(--ship-head-shape);
+  rotate: 90deg;
+}
+
+.ship-head-horizontal.destroyer,
+.ship-head-horizontal.destroyer::before {
+  clip-path: var(--ship-head-shape);
+}
+
+.ship-tail-horizontal.destroyer,
+.ship-tail-horizontal.destroyer::before {
+  clip-path: var(--ship-tail-shape);
+}
+
+.ship-head-vertical.destroyer,
+.ship-head-vertical.destroyer::before {
+  clip-path: var(--ship-head-shape);
+  rotate: 90deg;
+}
+
+.ship-tail-vertical.destroyer,
+.ship-tail-vertical.destroyer::before {
+  border-radius: var(--ship-tail-shape);
+  rotate: 90deg;
+}
+
+/* PATROL BOAT */
+.draggable_ships.horizontal .patrol-boat:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.draggable_ships.horizontal .patrol-boat:last-child {
+  clip-path: var(--ship-head-shape);
+}
+
+.draggable_ships.vertical .patrol-boat:first-child {
+  border-radius: 10px 0 0 10px;
+  rotate: 90deg;
+}
+
+.draggable_ships.vertical .patrol-boat:last-child {
+  clip-path: var(--ship-head-shape);
+  rotate: 90deg;
+}
+
+.ship-head-horizontal.patrol-boat,
+.ship-head-horizontal.patrol-boat::before {
+  clip-path: var(--ship-head-shape);
+}
+
+.ship-tail-horizontal.patrol-boat,
+.ship-tail-horizontal.patrol-boat::before {
+  clip-path: var(--ship-tail-shape);
+}
+
+.ship-head-vertical.patrol-boat,
+.ship-head-vertical.patrol-boat::before {
+  clip-path: var(--ship-head-shape);
+  rotate: 90deg;
+}
+
+.ship-tail-vertical.patrol-boat,
+.ship-tail-vertical.patrol-boat::before {
+  border-radius: var(--ship-tail-shape);
+  rotate: 90deg;
+}
+
+/* SHIP RIPPLES */
 
 .gameboard_player .ship-vertical::before,
 .gameboard_player .ship-horizontal::before {
@@ -389,19 +579,6 @@ button {
     opacity: 0;
     transform: scaleY(1.5);
   }
-}
-
-.gameboard_row-label {
-  align-self: center;
-}
-
-.gameboard_col-label {
-  justify-self: center;
-  margin-bottom: 10px;
-}
-
-.gameboard_cell-ship {
-  background: grey;
 }
 
 /* PLAYER MOVES */

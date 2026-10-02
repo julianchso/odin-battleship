@@ -283,11 +283,11 @@ function App() {
         <div className='gameboard_playBtn_wrapper'>
           {!play && !winner ? (
             <>
-              <button className='gameboard_randomBtn' onClick={handleRandomizeShips}>
+              <button className='gameboard_btn gameboard_randomBtn' onClick={handleRandomizeShips}>
                 Randomize
               </button>
               <button
-                className='gameboard_playBtn'
+                className='gameboard_btn gameboard_playBtn'
                 onClick={handlePlay}
                 disabled={!allShipPlaced()}
               >
@@ -298,7 +298,13 @@ function App() {
             ''
           )}
 
-          {winner ? <button onClick={startNewGame}>New Game</button> : ''}
+          {winner ? (
+            <button onClick={startNewGame} className='gameboard_btn'>
+              New Game
+            </button>
+          ) : (
+            ''
+          )}
         </div>
       </div>
     </>

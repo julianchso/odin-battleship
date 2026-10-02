@@ -5,12 +5,10 @@ type CellProps = {
   key: string;
   row: number;
   col: number;
-  id: string;
+  mode: 'prepare' | 'battle';
   onAttack?: (row: number, col: number) => void;
   hasShip: boolean;
   boardType: 'player' | 'computer';
-  play: boolean;
-  mode: 'prepare' | 'battle';
   isHead: boolean;
   isTail: boolean;
   orientation?: 'horizontal' | 'vertical';
@@ -53,7 +51,7 @@ export default function Cell({
 
   return (
     <div
-      className={`gameboard_cell gameboard_cell-${mode} ${hasShip ? 'gameboard_cell-ship' : ''} ${isHead ? `ship-head-${orientation}` : ''} ${isTail ? `ship-tail-${orientation}` : ''} ${hasShip ? (orientation == 'horizontal' ? 'ship-horizontal' : 'ship-vertical') : ''}`}
+      className={`gameboard_cell gameboard_cell-${mode} ${boardType == 'player' && shipId ? shipId : ''} ${hasShip ? 'gameboard_cell-ship' : ''} ${isHead ? `ship-head-${orientation}` : ''} ${isTail ? `ship-tail-${orientation}` : ''} ${hasShip ? (orientation == 'horizontal' ? 'ship-horizontal' : 'ship-vertical') : ''}`}
       onClick={handleAttack}
       ref={ref}
       data-id={`${boardType}-${row}-${col}`}
