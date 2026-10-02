@@ -40,34 +40,42 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
   if (targetDirection === 'up') {
     while (newRow >= 0 && board.isHit(newRow, newCol)) {
       newRow -= 1;
+      console.log('no diection change');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       targetDirection = 'down';
       newRow = ai.targetRow + 1;
+      console.log('change direction');
     }
   } else if (targetDirection === 'down') {
     while (newRow <= board.grid.length - 1 && board.isHit(newRow, newCol)) {
       newRow += 1;
+      console.log('no diection change');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       targetDirection = 'up';
       newRow = ai.targetRow - 1;
+      console.log('change direction');
     }
   } else if (targetDirection === 'right') {
     while (newCol <= board.grid.length - 1 && board.isHit(newRow, newCol)) {
       newCol += 1;
+      console.log('no diection change');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       targetDirection = 'left';
       newCol = ai.targetCol - 1;
+      console.log('change direction');
     }
   } else if (targetDirection === 'left') {
     while (newCol >= 0 && board.isHit(newRow, newCol)) {
       newCol -= 1;
+      console.log('no diection change');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       targetDirection = 'right';
       newCol = ai.targetCol + 1;
+      console.log('change direction');
     }
   }
 
@@ -92,8 +100,21 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
         col += 1;
       }
 
-      return isInBounds(board, row, col);
+      if (!isInBounds(board, row, col)) return false;
+      if (board.hasBeenAttacked(row, col)) return false;
+
+      return true;
     });
+
+    console.log(availableDirections);
+
+    if (availableDirections.length === 0) {
+      console.log('NO AVAILABLE DIRECTIONS', {
+        ai,
+        targetRow: ai.targetRow,
+        targetCol: ai.targetCol,
+      });
+    }
 
     attemptedDirection =
       availableDirections[Math.floor(Math.random() * availableDirections.length)];
@@ -111,6 +132,12 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
       newCol -= 1;
     }
   }
+
+  console.log('END:', {
+    targetRow: ai.targetRow,
+    targetCol: ai.targetCol,
+    targetDirection: ai.targetDirection,
+  });
 
   return {
     row: newRow,
