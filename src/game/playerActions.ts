@@ -29,7 +29,6 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
   let newCol = ai.targetCol;
   let targetDirection = ai.targetDirection;
   let attemptedDirection: Direction | null = null;
-  let mode;
 
   console.log('START:', {
     targetRow: ai.targetRow,
@@ -40,42 +39,34 @@ function getComputerAdjAtk(board: Gameboard, ai: AiState): ComputerMove {
   if (targetDirection === 'up') {
     while (newRow >= 0 && board.isHit(newRow, newCol)) {
       newRow -= 1;
-      console.log('no diection change');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       targetDirection = 'down';
       newRow = ai.targetRow + 1;
-      console.log('change direction');
     }
   } else if (targetDirection === 'down') {
     while (newRow <= board.grid.length - 1 && board.isHit(newRow, newCol)) {
       newRow += 1;
-      console.log('no diection change');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       targetDirection = 'up';
       newRow = ai.targetRow - 1;
-      console.log('change direction');
     }
   } else if (targetDirection === 'right') {
     while (newCol <= board.grid.length - 1 && board.isHit(newRow, newCol)) {
       newCol += 1;
-      console.log('no diection change');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       targetDirection = 'left';
       newCol = ai.targetCol - 1;
-      console.log('change direction');
     }
   } else if (targetDirection === 'left') {
     while (newCol >= 0 && board.isHit(newRow, newCol)) {
       newCol -= 1;
-      console.log('no diection change');
     }
     if (board.hasBeenAttacked(newRow, newCol)) {
       targetDirection = 'right';
       newCol = ai.targetCol + 1;
-      console.log('change direction');
     }
   }
 

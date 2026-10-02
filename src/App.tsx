@@ -12,6 +12,7 @@ import ShipPanel from './components/ShipPanel';
 import ShipLayer from './components/ShipLayer';
 
 import { type AiState, type ShipId, type ShipState } from './types/ship';
+import type { DragEndEvent } from '@dnd-kit/react';
 
 import './App.css';
 
@@ -29,7 +30,7 @@ function App() {
   const [computerBoard, setComputerBoard] = useState(createComputerBoard);
   const [turn, setTurn] = useState<'player' | 'computer'>('player');
   const [winner, setWinner] = useState<'player' | 'computer' | null>(null);
-  const [target, setTarget] = useState();
+  // const [target, setTarget] = useState<string | undefined>();
   const [computerAI, setComputerAI] = useState<AiState>({
     mode: 'hunting',
     targetRow: null,
@@ -210,15 +211,17 @@ function App() {
     setComputerBoard(createComputerBoard());
   }
 
-  function handleDragEnd(event) {
+  function handleDragEnd(event: DragEndEvent) {
     if (event.canceled) return;
 
     const { source, target } = event.operation;
-    if (!target) return;
+    if (!source || !target) return;
 
-    const [, row, col] = target.id.split('-').map(Number);
+    const [, row, col] = String(target.id).split('-').map(Number);
 
-    const ship = ships.find((s) => s.id === source.id);
+    const sourceId = source.id as ShipId;
+
+    const ship = ships.find((s) => s.id === sourceId);
 
     if (!ship) return;
 
@@ -237,7 +240,7 @@ function App() {
 
     setShips((prev) => {
       return prev.map((ship) => {
-        if (ship.id === source.id) {
+        if (ship.id === sourceId) {
           return {
             ...ship,
             row,
@@ -248,8 +251,6 @@ function App() {
         return ship;
       });
     });
-
-    setTarget(event.operation.target?.id);
   }
 
   return (
@@ -278,7 +279,7 @@ function App() {
               ships={[]}
             />
           </div>
-          {!play ? <ShipPanel ships={ships} /> : ''}
+          {!play && !winner ? <ShipPanel ships={ships} /> : ''}
         </DragDropProvider>
         <div className='gameboard_playBtn_wrapper'>
           {!play && !winner ? (

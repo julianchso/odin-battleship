@@ -11,8 +11,7 @@ type GameboardProps = {
   play: boolean;
   boardType: 'player' | 'computer';
   ships?: ShipState[];
-  mode: 'prepare' | 'battle';
-  onRotateShip: (id: ShipId) => void;
+  onRotateShip?: (id: ShipId) => void;
 };
 
 function Gameboard({
